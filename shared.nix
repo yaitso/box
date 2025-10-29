@@ -53,7 +53,7 @@
       $env.BOX_ROOT = ($env.BOX_ROOT? | default $env.PWD)
     '';
 
-    configFile.source = ./script/nu.nu;
+    configFile.source = ./script/shell.nu;
   };
 
   programs.direnv = {
@@ -105,10 +105,6 @@
   };
 
   home.file.".ssh/config".force = true;
-  home.file."${
-    if pkgs.stdenv.isDarwin then "Library/Application Support/nushell" else ".config/nushell"
-  }/box.nu".source =
-    ./script/box.nu;
 
   home.activation.linkConfigFiles = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.nushell}/bin/nu ${./script/files.nu}
