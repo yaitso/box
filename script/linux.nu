@@ -40,12 +40,6 @@ def main [--clean] {
   print "[linux] running setup.sh in vm"
   ^ssh ubuntu@orb "bash -c 'cd box && bash setup.sh'"
 
-  print "[linux] testing whoami"
-  ^ssh ubuntu@orb whoami
-
-  print "[linux] testing nushell"
-  ^ssh ubuntu@orb "nu -c 'version'"
-
   let elapsed = (date now) - $before
   print $"[linux] completed in ($elapsed)"
 }
