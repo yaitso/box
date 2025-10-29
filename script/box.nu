@@ -52,3 +52,7 @@ export def kount [] {
   nu ($env.HOME | path join "box" "script" "kount.nu")
 }
 
+export def linux [] {
+  nu ($env.HOME | path join "box" "script" "linux.nu")
+}
+
