@@ -2,11 +2,19 @@ $env.config = {
   show_banner: false
   hooks: {
     env_change: {
-      PWD: [{|before, after|
-        if (".envrc" | path exists) {
-          direnv export json | from json | default {} | load-env
+      PWD: [
+        {|before, after|
+          if (".envrc" | path exists) {
+            direnv export json | from json | default {} | load-env
+          }
         }
-      }]
+        {
+          condition: {|before, after|
+            (".venv/bin/activate.nu" | path exists) and (overlay list | find "activate" | is-empty)
+          }
+          code: "overlay use .venv/bin/activate.nu"
+        }
+      ]
     }
   }
 }
