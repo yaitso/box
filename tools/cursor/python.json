@@ -1,0 +1,21 @@
+{
+	"cell": {
+		"prefix": "cc",
+		"body": [
+			"# %% $1",
+		],
+		"description": "Create a cell"
+	},
+	"script": {
+		"prefix": "script",
+		"body": [
+			"# /// script",
+			"# dependencies = [",
+			"#   \"$1\",",
+			"# ]",
+			"# ///",
+		],
+		"description": "Create a script"
+	}
+}
+

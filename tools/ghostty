@@ -1,0 +1,30 @@
+window-theme = ghostty
+background-opacity = 1.0
+minimum-contrast = 1.0
+
+background = 000000
+foreground = ffffff
+cursor-color = ffffff
+selection-background = 333333
+selection-foreground = ffffff
+
+palette = 0=#000000
+palette = 1=#ff6b6b
+palette = 2=#60fa67
+palette = 3=#ffd866
+palette = 4=#7c83fd
+palette = 5=#ff77ff
+palette = 6=#00b7ff
+palette = 7=#ffffff
+palette = 8=#7f848e
+palette = 9=#ff6b6b
+palette = 10=#60fa67
+palette = 11=#ffd866
+palette = 12=#7c83fd
+palette = 13=#ff77ff
+palette = 14=#00b7ff
+palette = 15=#ffffff
+
+font-family = "JetBrains Mono"
+font-size = 13
+

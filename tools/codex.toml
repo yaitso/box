@@ -1,0 +1,12 @@
+model = "gpt-5"
+model_reasoning_effort = "high"
+[projects."~/box"]
+trust_level = "trusted"
+auto_update = false
+
+[features]
+approve_all = true
+web_search_request = true
+plan_tool = true
+unified_exec = true
+streamable_shell = true

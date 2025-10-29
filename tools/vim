@@ -1,0 +1,55 @@
+" jkl; movement mappings
+noremap j h
+noremap k j
+noremap l k
+noremap ; l
+
+" visual mode
+vnoremap j h
+vnoremap k j
+vnoremap l k
+vnoremap ; l
+
+" operator-pending mode
+onoremap j h
+onoremap k j
+onoremap l k
+onoremap ; l
+
+" line numbers
+set number
+set relativenumber
+
+" search
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+" indentation
+set autoindent
+set smartindent
+set expandtab
+set shiftwidth=2
+set tabstop=2
+
+" editing
+set mouse=a
+set clipboard=unnamed
+
+" appearance
+syntax on
+set cursorline
+set termguicolors
+colorscheme black
+
+" disable arrow keys
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+
+" ctrl+q to save all and quit
+nnoremap <C-q> :wqa<CR>
+inoremap <C-q> <Esc>:wqa<CR>
+

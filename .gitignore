@@ -1,0 +1,8 @@
+TODO.md
+.env
+.env.*
+kount/kount.db
+kount/Derived/
+kount/kount.xcodeproj/
+kount/kount.xcworkspace/
+state/

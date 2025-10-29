@@ -1,0 +1,9 @@
+Include ~/.orbstack/ssh/config
+
+Host yaitso
+  IdentityFile ~/.ssh/yaitso
+
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+

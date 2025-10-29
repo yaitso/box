@@ -1,0 +1,6 @@
+ahgood.movetab
+anthropic.claude-code
+jnoortheen.nix-ide
+redhat.vscode-xml
+redwan-hossain.skillavid-pure-black
+thenuprojectcontributors.vscode-nushell-lang
