@@ -1,13 +1,38 @@
 import Cocoa
 import CoreGraphics
 import Foundation
+import ServiceManagement
 import SQLite3
+import SwiftUI
 
 class KountDelegate: NSObject, NSApplicationDelegate {
     struct AppState { var total: Int64; var current: Int64 }
+
     enum Constants {
         static let persist_interval: TimeInterval = 60
         static let warning_symbol = "💀"
+        static let seconds_per_day: Int64 = 86400
+        static let menu_item_width: CGFloat = 180
+        static let menu_item_height: CGFloat = 26
+    }
+
+    enum MenuItemConfig {
+        static let symbol_size: CGFloat = 13.65
+        static let count_size: CGFloat = 13
+        static let hover_opacity: CGFloat = 0.06
+        static let corner_radius: CGFloat = 6
+        static let padding_horizontal: CGFloat = 12
+        static let padding_vertical: CGFloat = 4
+        static let padding_inset: CGFloat = 6
+    }
+
+    enum QuitItemConfig {
+        static let corner_radius_top: CGFloat = 8
+        static let corner_radius_bottom: CGFloat = 12
+        static let padding_horizontal: CGFloat = 16
+        static let padding_top: CGFloat = 4
+        static let padding_bottom: CGFloat = 6
+        static let padding_inset: CGFloat = 9
     }
 
     var status_item: NSStatusItem?
@@ -16,6 +41,7 @@ class KountDelegate: NSObject, NSApplicationDelegate {
     var db: OpaquePointer?
     var timer: Timer?
     var event_tap: CFMachPort?
+    var menu: NSMenu?
     var db_path: String {
         let home = FileManager.default.homeDirectoryForCurrentUser
         return home.appendingPathComponent("box/kount/kount.db").path
@@ -27,13 +53,28 @@ class KountDelegate: NSObject, NSApplicationDelegate {
 
         if let button = status_item?.button {
             button.title = "0"
+            button.alignment = .center
+            button.imagePosition = .noImage
         }
+
+        setup_menu()
+        enable_login_item()
 
         init_db()
         current_day_start = get_current_day_start()
         load_today_total()
         start_event_monitor()
         start_periodic_save()
+    }
+
+    func enable_login_item() {
+        if #available(macOS 13.0, *) {
+            do {
+                try SMAppService.mainApp.register()
+            } catch {
+                print("failed to register login item: \(error)")
+            }
+        }
     }
 
     func init_db() {
@@ -56,18 +97,8 @@ class KountDelegate: NSObject, NSApplicationDelegate {
 
     func load_today_total() {
         let dayStart = current_day_start
-        let dayEnd = dayStart + 86400
-        let query = "SELECT SUM(count) FROM hourly_counts WHERE timestamp >= ? AND timestamp < ?"
-        var statement: OpaquePointer?
-
-        if sqlite3_prepare_v2(db, query, -1, &statement, nil) == SQLITE_OK {
-            sqlite3_bind_int64(statement, 1, dayStart)
-            sqlite3_bind_int64(statement, 2, dayEnd)
-            if sqlite3_step(statement) == SQLITE_ROW {
-                state.total = sqlite3_column_int64(statement, 0)
-            }
-        }
-        sqlite3_finalize(statement)
+        let dayEnd = dayStart + Constants.seconds_per_day
+        state.total = get_count_for_range(start: dayStart, end: dayEnd)
         update_display()
     }
 
@@ -152,6 +183,41 @@ class KountDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    func setup_menu() {
+        menu = NSMenu()
+        menu?.delegate = self
+        status_item?.menu = menu
+    }
+
+    func get_count_for_range(start: Int64, end: Int64) -> Int64 {
+        let query = "SELECT SUM(count) FROM hourly_counts WHERE timestamp >= ? AND timestamp < ?"
+        var statement: OpaquePointer?
+        var result: Int64 = 0
+
+        if sqlite3_prepare_v2(db, query, -1, &statement, nil) == SQLITE_OK {
+            sqlite3_bind_int64(statement, 1, start)
+            sqlite3_bind_int64(statement, 2, end)
+            if sqlite3_step(statement) == SQLITE_ROW {
+                result = sqlite3_column_int64(statement, 0)
+            }
+        }
+        sqlite3_finalize(statement)
+        return result
+    }
+
+    func styled_menu_item(symbol: String, interval: String, count: Int64) -> NSMenuItem {
+        let item = NSMenuItem()
+        let view = MenuItemView(symbol: symbol, interval: interval, count: count)
+        let hosting = NSHostingView(rootView: view)
+        hosting.frame = NSRect(
+            x: 0, y: 0,
+            width: Constants.menu_item_width,
+            height: Constants.menu_item_height
+        )
+        item.view = hosting
+        return item
+    }
+
     func show_accessibility_alert() {
         let alert = NSAlert()
         alert.messageText = "input monitoring permission required"
@@ -167,5 +233,122 @@ class KountDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_: Notification) {
         save_interval_count()
         sqlite3_close(db)
+    }
+}
+
+struct MenuItemView: View {
+    let symbol: String
+    let interval: String
+    let count: Int64
+    @State private var is_hovering = false
+
+    var body: some View {
+        HStack(spacing: 0) {
+            Image(systemName: symbol)
+                .font(.system(size: KountDelegate.MenuItemConfig.symbol_size))
+                .foregroundColor(.black)
+                .frame(width: 16)
+
+            Text(interval)
+                .font(.system(size: KountDelegate.MenuItemConfig.symbol_size))
+                .foregroundColor(.black)
+                .padding(.leading, 8)
+
+            Spacer(minLength: 12)
+
+            Text(String(count))
+                .font(.system(size: KountDelegate.MenuItemConfig.count_size).monospacedDigit())
+                .foregroundColor(.black)
+        }
+        .padding(.horizontal, KountDelegate.MenuItemConfig.padding_horizontal)
+        .padding(.vertical, KountDelegate.MenuItemConfig.padding_vertical)
+        .background(
+            RoundedRectangle(cornerRadius: KountDelegate.MenuItemConfig.corner_radius)
+                .fill(is_hovering ? Color.black.opacity(KountDelegate.MenuItemConfig.hover_opacity) : Color.clear)
+                .padding(.horizontal, KountDelegate.MenuItemConfig.padding_inset)
+        )
+        .onHover { hovering in
+            is_hovering = hovering
+        }
+    }
+}
+
+struct QuitMenuItemView: View {
+    @State private var is_hovering = false
+
+    var body: some View {
+        HStack(spacing: 0) {
+            Spacer()
+            Image(systemName: "figure.fall")
+                .font(.system(size: KountDelegate.MenuItemConfig.symbol_size))
+                .foregroundColor(.black)
+                .frame(width: 16)
+
+            Text("quit")
+                .font(.system(size: KountDelegate.MenuItemConfig.symbol_size))
+                .foregroundColor(.black)
+                .padding(.leading, 8)
+            Spacer()
+        }
+        .padding(.horizontal, KountDelegate.QuitItemConfig.padding_horizontal)
+        .padding(.top, KountDelegate.QuitItemConfig.padding_top)
+        .padding(.bottom, KountDelegate.QuitItemConfig.padding_bottom)
+        .background(
+            UnevenRoundedRectangle(
+                topLeadingRadius: KountDelegate.QuitItemConfig.corner_radius_top,
+                bottomLeadingRadius: KountDelegate.QuitItemConfig.corner_radius_bottom,
+                bottomTrailingRadius: KountDelegate.QuitItemConfig.corner_radius_bottom,
+                topTrailingRadius: KountDelegate.QuitItemConfig.corner_radius_top
+            )
+            .fill(is_hovering ? Color.black.opacity(KountDelegate.MenuItemConfig.hover_opacity) : Color.clear)
+            .padding(.horizontal, KountDelegate.QuitItemConfig.padding_inset)
+        )
+        .contentShape(Rectangle())
+        .onTapGesture {
+            NSApplication.shared.terminate(nil)
+        }
+        .onHover { hovering in
+            is_hovering = hovering
+        }
+    }
+}
+
+extension KountDelegate: NSMenuDelegate {
+    func menuWillOpen(_: NSMenu) {
+        update_menu_items()
+    }
+
+    func update_menu_items() {
+        menu?.removeAllItems()
+
+        let today_start = get_current_day_start()
+        let today_end = today_start + Constants.seconds_per_day
+        let yesterday_start = today_start - Constants.seconds_per_day
+        let week_start = today_start - (7 * Constants.seconds_per_day)
+        let month_start = today_start - (30 * Constants.seconds_per_day)
+
+        let yesterday_count = get_count_for_range(start: yesterday_start, end: today_start)
+        let week_count = get_count_for_range(start: week_start, end: today_end) + state.current
+        let month_count = get_count_for_range(start: month_start, end: today_end) + state.current
+
+        menu?.addItem(styled_menu_item(symbol: "sun.haze.fill", interval: "yesterday", count: yesterday_count))
+        menu?.addItem(styled_menu_item(symbol: "tornado", interval: "week", count: week_count))
+        menu?.addItem(styled_menu_item(symbol: "moon.stars.fill", interval: "month", count: month_count))
+
+        menu?.addItem(NSMenuItem.separator())
+        menu?.addItem(create_quit_menu_item())
+    }
+
+    func create_quit_menu_item() -> NSMenuItem {
+        let item = NSMenuItem(title: "", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        item.target = NSApp
+        let hosting = NSHostingView(rootView: QuitMenuItemView())
+        hosting.frame = NSRect(
+            x: 0, y: 0,
+            width: Constants.menu_item_width,
+            height: Constants.menu_item_height
+        )
+        item.view = hosting
+        return item
     }
 }
