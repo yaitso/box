@@ -20,12 +20,12 @@ let box_root = $env.HOME | path join "box"
 cd $box_root
 ^zip -r /tmp/box.zip . -x ".git/*"
 
-print "[linux] copying zip to vm"
+print "[linux] copying zip to vm via scp"
 ^ssh ubuntu@orb "rm -rf ~/box ~/box.zip"
-^orb push -m ubuntu /tmp/box.zip
+^scp /tmp/box.zip ubuntu@orb:~/
 
 print "[linux] extracting to ~/box in vm"
-^ssh ubuntu@orb "cd ~ && unzip -q box.zip -d box && rm box.zip"
+^ssh ubuntu@orb "unzip -q ~/box.zip -d ~/box && rm ~/box.zip"
 
 print "[linux] running setup.sh in vm"
 ^ssh ubuntu@orb "cd box && bash setup.sh"
