@@ -33,6 +33,7 @@
       "hiddenbar"
       "tuist"
       "codex"
+      "lm-studio"
     ];
   };
 

@@ -1,16 +1,13 @@
 #!/usr/bin/env nu
 
+let before = (date now)
 let box_root = ($env.BOX_ROOT? | default ($env.HOME | path join "box"))
-
-# ensure ~/box points at BOX_ROOT for tools expecting that layout
 let home_box = $env.HOME | path join "box"
 if not ($home_box | path exists) {
   ^ln -sfn $box_root $home_box
 } else if (($home_box | path type) == "symlink") {
   ^ln -sfn $box_root $home_box
 }
-
-let before = (date now)
 
 let files = [
   { src: "tools/helix.toml", dst: ".config/helix/config.toml" }
@@ -35,7 +32,7 @@ for file in $files {
 
   ^mkdir -p $dst_dir
   ^ln -sf $src_path $dst_path
-  print $"[files] link ($src_path) → ($dst_path)"
+  print $"[files] link ($src_path) to ($dst_path)"
 }
 
 let count = $files | length
