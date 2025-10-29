@@ -21,11 +21,11 @@ cd $box_root
 ^zip -r /tmp/box.zip . -x ".git/*"
 
 print "[linux] copying zip to vm"
-^orb run -m ubuntu rm -rf ~/box ~/box.zip
+^ssh ubuntu@orb "rm -rf ~/box ~/box.zip"
 ^orb push -m ubuntu /tmp/box.zip
 
 print "[linux] extracting to ~/box in vm"
-^orb run -m ubuntu bash -c "cd ~ && unzip -q box.zip -d box && rm box.zip"
+^ssh ubuntu@orb "cd ~ && unzip -q box.zip -d box && rm box.zip"
 
 print "[linux] running setup.sh in vm"
 ^ssh ubuntu@orb "cd box && bash setup.sh"

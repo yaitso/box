@@ -6,8 +6,8 @@ import SQLite3
 class KountDelegate: NSObject, NSApplicationDelegate {
     struct AppState { var total: Int64; var current: Int64 }
     enum Constants {
-        static let persist_interval: TimeInterval = 600
-        static let warning_symbol = "⚠"
+        static let persist_interval: TimeInterval = 60
+        static let warning_symbol = "💀"
     }
 
     var status_item: NSStatusItem?
