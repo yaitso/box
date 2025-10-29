@@ -19,7 +19,7 @@ def main [--clean] {
     sleep 10sec
     
     print "[linux] fixing hostname resolution"
-    ^ssh ubuntu@orb "echo '127.0.0.1 ubuntu' | sudo tee -a /etc/hosts >/dev/null"
+    ^ssh ubuntu@orb "echo '127.0.0.1 linux' | sudo tee -a /etc/hosts >/dev/null"
     
     print "[linux] installing unzip in vm"
     ^ssh ubuntu@orb "sudo apt-get update -qq && sudo apt-get install -y unzip"
@@ -35,10 +35,10 @@ def main [--clean] {
   ^scp /tmp/box.zip ubuntu@orb:~/
 
   print "[linux] extracting to ~/box in vm"
-  ^ssh ubuntu@orb "unzip -q ~/box.zip -d ~/box && rm ~/box.zip"
+  ^ssh ubuntu@orb "bash -c 'unzip -q ~/box.zip -d ~/box && rm ~/box.zip'"
 
   print "[linux] running setup.sh in vm"
-  ^ssh ubuntu@orb "cd box && bash setup.sh"
+  ^ssh ubuntu@orb "bash -c 'cd box && bash setup.sh'"
 
   print "[linux] testing whoami"
   ^ssh ubuntu@orb whoami
