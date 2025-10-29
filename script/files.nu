@@ -47,3 +47,18 @@ for file in $files {
 let count = $files | length
 let elapsed = ((date now) - $before)
 print $"[files] linked ($count) config files in ($elapsed)"
+
+let graalpy_path = $env.HOME | path join ".local/share/uv/python"
+if ($graalpy_path | path exists) {
+  let graalpy_bin = ls $graalpy_path
+    | where name =~ "graalpy-"
+    | get name.0?
+    | path join "bin/graalpy"
+
+  if ($graalpy_bin | path exists) {
+    let bin_dir = $env.HOME | path join ".local/bin"
+    ^mkdir -p $bin_dir
+    ^ln -sf $graalpy_bin ($bin_dir | path join "graalpy")
+    print $"[files] linked graalpy to ($bin_dir)/graalpy"
+  }
+}

@@ -4,8 +4,9 @@ export alias codex = ^codex --dangerously-bypass-approvals-and-sandbox --search
 export alias c = claude
 export alias co = codex
 export alias ns = nix-shell
-export alias py = python3
-export alias python = python3
+export alias py = python3.14
+export alias python = python3.14
+export alias python3 = python3.14
 
 export alias ls = ls -ald
 export def wh [...rest] { which -a ...$rest | uniq }
