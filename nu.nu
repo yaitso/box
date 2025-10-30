@@ -1,6 +1,7 @@
 export alias cmd = ^cursor $"($env.HOME)/.claude/CLAUDE.md"
 export alias claude = ^claude --dangerously-skip-permissions
 export alias codex = ^codex --dangerously-bypass-approvals-and-sandbox --search
+export alias h = helix
 export alias c = claude
 export alias co = codex
 export alias ns = nix-shell
