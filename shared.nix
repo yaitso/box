@@ -128,6 +128,12 @@
     ${pkgs.uv}/bin/uv python pin --global 3.14 --quiet || true
   '';
 
+  home.activation.setupMcpServers = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    PATH="${pkgs.bun}/bin:${pkgs.claude-code}/bin:${pkgs.codex}/bin:$PATH"
+    ${pkgs.claude-code}/bin/claude mcp add chrome-devtools bunx chrome-devtools-mcp@latest || true
+    ${pkgs.codex}/bin/codex mcp add chrome-devtools -- bunx chrome-devtools-mcp@latest || true
+  '';
+
   home.file.".local/bin/brave-9228" = {
     executable = true;
     text = ''
