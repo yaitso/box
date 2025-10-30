@@ -63,22 +63,16 @@
         },
         "bash": {
             "path": "/bin/bash",
-            "args": [
-                "-l"
-            ],
+            "args": ["-l"],
             "icon": "terminal-bash"
         },
         "zsh": {
             "path": "zsh",
-            "args": [
-                "-l"
-            ]
+            "args": ["-l"]
         },
         "fish": {
             "path": "fish",
-            "args": [
-                "-l"
-            ]
+            "args": ["-l"]
         },
         "tmux": {
             "path": "tmux",
@@ -99,9 +93,7 @@
         "path": "/bin/bash",
         "icon": "terminal-bash"
     },
-    "terminal.integrated.commandsToSkipShell": [
-        "language-julia.interrupt"
-    ],
+    "terminal.integrated.commandsToSkipShell": ["language-julia.interrupt"],
     "terminal.integrated.enableMultiLinePasteWarning": false,
     "workbench.colorTheme": "SkillAvid Pure Black",
     "workbench.colorCustomizations": {
@@ -156,9 +148,7 @@
         }
     },
     "todo-tree.general.revealBehaviour": "end of todo",
-    "projectManager.git.baseFolders": [
-        "~/"
-    ],
+    "projectManager.git.baseFolders": ["~/"],
     "notebook.output.textLineLimit": 1000,
     "notebook.output.scrolling": true,
     "notebook.defaultFormatter": "charliermarsh.ruff",
@@ -169,12 +159,7 @@
     "testing.defaultGutterClickAction": "debug",
     "debug.allowBreakpointsEverywhere": true,
     "debug.toolBarLocation": "docked",
-    "errorLens.enabledDiagnosticLevels": [
-        "warning",
-        "info",
-        "error",
-        "hint"
-    ],
+    "errorLens.enabledDiagnosticLevels": ["warning", "info", "error", "hint"],
     "errorLens.codeLensEnabled": true,
     "errorLens.enableOnDiffView": true,
     "errorLens.editorHoverPartsEnabled": {
@@ -232,10 +217,7 @@
     "julia.inlayHints.static.enabled": true,
     "C_Cpp.intelliSenseEngine": "disabled",
     "zig.zls.enabled": "on",
-    "magicRacket.languageServer.arguments": [
-        "-l",
-        "racket-langserver"
-    ],
+    "magicRacket.languageServer.arguments": ["-l", "racket-langserver"],
     "magicRacket.trace.server": "verbose",
     "redhat.telemetry.enabled": false,
     "explorer.confirmDelete": false,
@@ -246,4 +228,3 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
 }
-

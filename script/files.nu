@@ -2,12 +2,7 @@
 
 let before = (date now)
 let box_root = $env.HOME | path join "box"
-
-let nu_dir = if ($nu.os-info.name == "macos") {
-  "Library/Application Support/nushell"
-} else {
-  ".config/nushell"
-}
+let nu_dir = $nu.default-config-dir | path relative-to $env.HOME
 
 let files = [
   { src: "tools/vim", dst: ".vimrc" }
