@@ -12,6 +12,7 @@
   home.packages =
     (with pkgs; [
       ast-grep
+      bun
       claude-code
       claude-code-router
       codex
@@ -125,5 +126,58 @@
     PATH="${pkgs.uv}/bin:$PATH"
     ${pkgs.uv}/bin/uv python install 3.14 graalpy-3.12 --quiet || true
     ${pkgs.uv}/bin/uv python pin --global 3.14 --quiet || true
+  '';
+
+  home.file.".local/bin/brave-9228" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      APP1="$HOME/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+      APP2="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+
+      if [ -x "$APP1.real" ]; then
+        BIN="$APP1.real"
+      elif [ -x "$APP2.real" ]; then
+        BIN="$APP2.real"
+      elif [ -x "$APP1" ]; then
+        BIN="$APP1"
+      else
+        BIN="$APP2"
+      fi
+
+      exec "$BIN" --remote-debugging-port=9228 "$@"
+    '';
+  };
+
+  home.activation.bravePatch = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    set -e
+
+    WRAPPER="$HOME/.local/bin/brave-9228"
+
+    patch_one() {
+      local APP="$1"
+      local BIN="$APP/Contents/MacOS/Brave Browser"
+      [ -e "$BIN" ] || return 0
+
+      if [ -L "$BIN" ]; then
+        local TARGET
+        TARGET="$(readlink "$BIN" || true)"
+        if [ "$TARGET" != "$WRAPPER" ]; then
+          ln -sf "$WRAPPER" "$BIN"
+        fi
+      else
+        if [ -e "$BIN" ] && [ -e "$BIN.real" ]; then
+          mv -f "$BIN" "$BIN.real"
+        elif [ -e "$BIN" ] && [ ! -e "$BIN.real" ]; then
+          mv "$BIN" "$BIN.real"
+        fi
+        ln -sf "$WRAPPER" "$BIN"
+      fi
+    }
+
+    patch_one "$HOME/Applications/Brave Browser.app"
+    patch_one "/Applications/Brave Browser.app"
   '';
 }

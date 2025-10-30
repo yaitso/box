@@ -45,6 +45,7 @@
       "zoom"
       "notion-calendar"
       "hiddenbar"
+      "helium-browser"
       "tuist"
       "lm-studio"
     ];

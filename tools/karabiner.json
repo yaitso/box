@@ -132,6 +132,34 @@
                 ]
               }
             ]
+          },
+          {
+            "description": "option+enter to shift+enter in cursor",
+            "manipulators": [
+              {
+                "type": "basic",
+                "from": {
+                  "key_code": "return_or_enter",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "return_or_enter",
+                    "modifiers": ["left_shift"]
+                  }
+                ],
+                "conditions": [
+                  {
+                    "type": "frontmost_application_if",
+                    "bundle_identifiers": [
+                      "^com\\.todesktop\\.230313mzl4w4u92$"
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
