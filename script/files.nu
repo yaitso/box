@@ -1,13 +1,7 @@
 #!/usr/bin/env nu
 
 let before = (date now)
-let box_root = ($env.BOX_ROOT? | default ($env.HOME | path join "box"))
-let home_box = $env.HOME | path join "box"
-if not ($home_box | path exists) {
-  ^ln -sfn $box_root $home_box
-} else if (($home_box | path type) == "symlink") {
-  ^ln -sfn $box_root $home_box
-}
+let box_root = $env.HOME | path join "box"
 
 let nu_dir = if ($nu.os-info.name == "macos") {
   "Library/Application Support/nushell"

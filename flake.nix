@@ -23,29 +23,7 @@
       fenix,
     }:
     let
-      mkUser =
-        base:
-        let
-          u = builtins.getEnv "BOX_USERNAME";
-          f = builtins.getEnv "BOX_FULLNAME";
-          e = builtins.getEnv "BOX_EMAIL";
-          overrides =
-            if u != "" then
-              {
-                username = u;
-                fullname = if f != "" then f else base.fullname;
-                email = if e != "" then e else base.email;
-              }
-            else
-              { };
-        in
-        base // overrides;
-
-      user = mkUser {
-        username = "yaitso";
-        fullname = "Yai Tso";
-        email = "root@yaitso.com";
-      };
+      user = import ./env.nix;
     in
     {
       darwinConfigurations.macos = nix-darwin.lib.darwinSystem {

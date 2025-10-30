@@ -52,13 +52,14 @@
 
     envFile.text = ''
       $env.PATH = ($env.PATH | split row (char esep) | prepend [
+        $"($env.HOME)/.local/bin"
         $"($env.HOME)/.nix-profile/bin"
         "/nix/var/nix/profiles/default/bin"
+        "/usr/local/bin"
       ])
 
       $env.EDITOR = "hx"
       $env.DIRENV_LOG_FORMAT = ""
-      $env.BOX_ROOT = ($env.BOX_ROOT? | default $env.PWD)
     '';
 
     configFile.source = ./script/shell.nu;

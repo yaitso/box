@@ -94,10 +94,6 @@
         "when": "accessibilityHelpIsShown"
     },
     {
-        "key": "cmd+e",
-        "command": "workbench.action.showAllSymbols"
-    },
-    {
         "key": "ctrl+cmd+left",
         "command": "movetab.moveTabToLeft"
     },

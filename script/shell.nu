@@ -35,4 +35,4 @@ $env.PROMPT_COMMAND = {
 $env.BASH_DEFAULT_TIMEOUT_MS = 3600000
 $env.BASH_MAX_TIMEOUT_MS = 360000000
 
-use nu.nu *
+use ($nu.default-config-dir | path join "nu.nu") *

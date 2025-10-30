@@ -2,6 +2,7 @@ THINKS.md
 TODO.md
 .env
 .env.*
+env.nix
 kount/kount.db
 kount/Derived/
 kount/kount.xcodeproj/

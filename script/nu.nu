@@ -1,11 +1,13 @@
-export alias cmd = ^cursor $"($env.HOME)/.claude/CLAUDE.md"
+export alias cmd = cursor ~/.claude/CLAUDE.md
 export alias claude = ^claude --dangerously-skip-permissions
 export alias codex = ^codex --dangerously-bypass-approvals-and-sandbox --search
+export alias h = hx
 export alias c = claude
 export alias co = codex
 export alias ns = nix-shell
-export alias py = python3
-export alias python = python3
+export def py [...args] { ^python3.14 ...$args }
+export def python [...args] { ^python3.14 ...$args }
+export def python3 [...args] { ^python3.14 ...$args }
 
 export alias ls = ls -ald
 export def wh [...rest] { which -a ...$rest | uniq }
@@ -24,4 +26,4 @@ export def repo [name: string] {
   git init
 }
 
-export use build.nu *
+export use ($nu.default-config-dir | path join "build.nu") *

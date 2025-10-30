@@ -5,6 +5,11 @@ use shared.nu run
 let root = ($env.HOME | path join "box")
 cd $root
 
+if ("env.nix" | path exists) {
+  ^git reset HEAD env.nix out+err> /dev/null
+  ^rm -f env.nix
+}
+
 let tmpfile = (mktemp -t precommit.XXXXXX)
 
 print "[precommit] format nix"

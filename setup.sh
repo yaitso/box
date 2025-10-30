@@ -42,6 +42,21 @@ export BOX_USERNAME="${BOX_USERNAME:-yaitso}"
 export BOX_FULLNAME="${BOX_FULLNAME:-Yai Tso}"
 export BOX_EMAIL="${BOX_EMAIL:-root@yaitso.com}"
 
+ENV_NIX_CONTENT="{
+  username = \"$BOX_USERNAME\";
+  fullname = \"$BOX_FULLNAME\";
+  email = \"$BOX_EMAIL\";
+}"
+
+if [ ! -f env.nix ] || [ "$(cat env.nix)" != "$ENV_NIX_CONTENT" ]; then
+  log "generating env.nix"
+  echo "$ENV_NIX_CONTENT" >env.nix
+fi
+
+if [ -d .git ] && [ -f env.nix ]; then
+  git add -f env.nix
+fi
+
 log "building system configuration for $OS"
 
 tmpfile=$(mktemp)
@@ -50,14 +65,14 @@ trap 'rm -f "$tmpfile"' EXIT
 if [ "$OS" = "macos" ]; then
   # shellcheck disable=SC2024
   if ! sudo -E nix --extra-experimental-features 'nix-command flakes' \
-    run nix-darwin -- switch --flake ".#macos" --impure &>"$tmpfile"; then
+    run nix-darwin -- switch --flake ".#macos" &>"$tmpfile"; then
     cat "$tmpfile"
     exit 1
   fi
 else
   # shellcheck disable=SC2024
   if ! nix --extra-experimental-features 'nix-command flakes' \
-    run home-manager -- switch --flake ".#linux" --impure &>"$tmpfile"; then
+    run home-manager -- switch --flake ".#linux" &>"$tmpfile"; then
     cat "$tmpfile"
     exit 1
   fi
@@ -78,4 +93,7 @@ if [ -d .git ]; then
   log "installing git precommit hook"
   mkdir -p .git/hooks
   ln -sf "$BOX_ROOT/script/precommit.nu" .git/hooks/pre-commit
+
+  log "cleaning up env.nix from staging"
+  git reset HEAD env.nix >/dev/null 2>&1 || true
 fi
