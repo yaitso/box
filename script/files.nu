@@ -37,17 +37,30 @@ let count = $files | length
 let elapsed = ((date now) - $before)
 print $"[files] linked ($count) config files in ($elapsed)"
 
-let graalpy_path = $env.HOME | path join ".local/share/uv/python"
-if ($graalpy_path | path exists) {
-  let graalpy_bin = ls $graalpy_path
+let uv_python_path = $env.HOME | path join ".local/share/uv/python"
+let bin_dir = $env.HOME | path join ".local/bin"
+^mkdir -p $bin_dir
+
+if ($uv_python_path | path exists) {
+  let graalpy_bin = ls $uv_python_path
     | where name =~ "graalpy-"
     | get name.0?
     | path join "bin/graalpy"
 
   if ($graalpy_bin | path exists) {
-    let bin_dir = $env.HOME | path join ".local/bin"
-    ^mkdir -p $bin_dir
-    ^ln -sf $graalpy_bin ($bin_dir | path join "graalpy")
-    print $"[files] linked graalpy to ($bin_dir)/graalpy"
+    ^ln -sf $graalpy_bin ($bin_dir | path join "graal")
+    print $"[files] linked graalpy to ($bin_dir)/graal"
+  }
+
+  let python314_bin = ls $uv_python_path
+    | where name =~ "cpython-3.14"
+    | get name.0?
+    | path join "bin/python3.14"
+
+  if ($python314_bin | path exists) {
+    ^ln -sf $python314_bin ($bin_dir | path join "python3.14")
+    ^ln -sf $python314_bin ($bin_dir | path join "python")
+    ^ln -sf $python314_bin ($bin_dir | path join "python3")
+    print $"[files] linked python to ($bin_dir)/python"
   }
 }

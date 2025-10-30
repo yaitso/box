@@ -5,9 +5,6 @@ export alias h = hx
 export alias c = claude
 export alias co = codex
 export alias ns = nix-shell
-export def py [...args] { ^python3.14 ...$args }
-export def python [...args] { ^python3.14 ...$args }
-export def python3 [...args] { ^python3.14 ...$args }
 
 export alias ls = ls -ald
 export def wh [...rest] { which -a ...$rest | uniq }
