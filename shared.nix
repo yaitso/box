@@ -19,8 +19,8 @@
       fd
       gemini-cli
       gh
-      gtop
       helix
+      htop
       hyperfine
       jq
       nix-direnv
@@ -37,7 +37,15 @@
       uv
     ])
     ++ [ fenix-pkgs.complete.toolchain ]
-    ++ (if pkgs.stdenv.isDarwin then [ pkgs.swiftformat ] else [ ]);
+    ++ (
+      if pkgs.stdenv.isDarwin then
+        [
+          pkgs.asitop
+          pkgs.swiftformat
+        ]
+      else
+        [ ]
+    );
 
   programs.nushell = {
     enable = true;
