@@ -37,10 +37,9 @@ fi
 # shellcheck disable=SC1090
 [ -f .env.$OS ] && source .env.$OS
 
-export BOX_ROOT="${BOX_ROOT:-$PWD}"
-export BOX_USERNAME="${BOX_USERNAME:-yaitso}"
-export BOX_FULLNAME="${BOX_FULLNAME:-Yai Tso}"
-export BOX_EMAIL="${BOX_EMAIL:-root@yaitso.com}"
+BOX_USERNAME="${BOX_USERNAME:-yaitso}"
+BOX_FULLNAME="${BOX_FULLNAME:-Yai Tso}"
+BOX_EMAIL="${BOX_EMAIL:-root@yaitso.com}"
 
 ENV_NIX_CONTENT="{
   username = \"$BOX_USERNAME\";
@@ -63,18 +62,33 @@ tmpfile=$(mktemp)
 trap 'rm -f "$tmpfile"' EXIT
 
 if [ "$OS" = "macos" ]; then
-  # shellcheck disable=SC2024
-  if ! sudo -E nix --extra-experimental-features 'nix-command flakes' \
-    run nix-darwin -- switch --flake ".#macos" &>"$tmpfile"; then
-    cat "$tmpfile"
-    exit 1
+  if command -v darwin-rebuild &>/dev/null; then
+    # shellcheck disable=SC2024
+    if ! sudo -E darwin-rebuild switch --flake .#macos &>"$tmpfile"; then
+      cat "$tmpfile"
+      exit 1
+    fi
+  else
+    # shellcheck disable=SC2024
+    if ! sudo -E nix --extra-experimental-features 'nix-command flakes' \
+      run nix-darwin -- switch --flake .#macos &>"$tmpfile"; then
+      cat "$tmpfile"
+      exit 1
+    fi
   fi
 else
-  # shellcheck disable=SC2024
-  if ! nix --extra-experimental-features 'nix-command flakes' \
-    run home-manager -- switch --flake ".#linux" &>"$tmpfile"; then
-    cat "$tmpfile"
-    exit 1
+  if command -v home-manager &>/dev/null; then
+    if ! home-manager switch --flake .#linux &>"$tmpfile"; then
+      cat "$tmpfile"
+      exit 1
+    fi
+  else
+    # shellcheck disable=SC2024
+    if ! nix --extra-experimental-features 'nix-command flakes' \
+      run home-manager -- switch --flake .#linux &>"$tmpfile"; then
+      cat "$tmpfile"
+      exit 1
+    fi
   fi
 
   if command -v nu &>/dev/null; then
@@ -92,7 +106,7 @@ log "system configuration applied in ${elapsed}s"
 if [ -d .git ]; then
   log "installing git precommit hook"
   mkdir -p .git/hooks
-  ln -sf "$BOX_ROOT/script/precommit.nu" .git/hooks/pre-commit
+  ln -sf "$PWD/script/precommit.nu" .git/hooks/pre-commit
 
   log "cleaning up env.nix from staging"
   git reset HEAD env.nix >/dev/null 2>&1 || true

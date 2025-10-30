@@ -46,7 +46,6 @@
       "notion-calendar"
       "hiddenbar"
       "tuist"
-      "codex"
       "lm-studio"
     ];
   };

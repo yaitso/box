@@ -23,4 +23,12 @@ export def repo [name: string] {
   git init
 }
 
+export def mojon [] {
+  uv pip install mojo --index-url https://dl.modular.com/public/nightly/python/simple/ --prerelease allow
+}
+
+export def mojos [] {
+  uv pip install mojo --extra-index-url https://modular.gateway.scarf.sh/simple/
+}
+
 export use ($nu.default-config-dir | path join "build.nu") *

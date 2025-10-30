@@ -14,6 +14,7 @@
       ast-grep
       claude-code
       claude-code-router
+      codex
       direnv
       duckdb
       fd
@@ -22,6 +23,7 @@
       helix
       htop
       hyperfine
+      jj
       jq
       nix-direnv
       nixd
