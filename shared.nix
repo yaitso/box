@@ -30,6 +30,7 @@
       nixd
       nixfmt
       nodejs_22
+      opentofu
       ripgrep
       ruff
       shellcheck
@@ -120,18 +121,13 @@
 
   home.activation.linkConfigFiles = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.nushell}/bin/nu ${./script/files.nu}
+    ${pkgs.nushell}/bin/nu ${./script/mcp.nu}
   '';
 
   home.activation.setupPython = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     PATH="${pkgs.uv}/bin:$PATH"
     ${pkgs.uv}/bin/uv python install 3.14 graalpy-3.12 --quiet || true
     ${pkgs.uv}/bin/uv python pin --global 3.14 --quiet || true
-  '';
-
-  home.activation.setupMcpServers = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-    PATH="${pkgs.bun}/bin:${pkgs.claude-code}/bin:${pkgs.codex}/bin:$PATH"
-    ${pkgs.claude-code}/bin/claude mcp add chrome-devtools bunx chrome-devtools-mcp@latest || true
-    ${pkgs.codex}/bin/codex mcp add chrome-devtools -- bunx chrome-devtools-mcp@latest || true
   '';
 
   home.file.".local/bin/brave-9228" = {
