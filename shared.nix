@@ -97,6 +97,7 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
+    includes = [ "~/box/tools/ssh.secret" ];
     matchBlocks."*" = {
       addKeysToAgent = "yes";
       extraOptions = {
