@@ -26,6 +26,7 @@
       hyperfine
       jj
       jq
+      minikube  
       nix-direnv
       nixd
       nixfmt
@@ -39,6 +40,7 @@
       tokei
       tree
       uv
+      zoxide
     ])
     ++ [ fenix-pkgs.complete.toolchain ]
     ++ (
