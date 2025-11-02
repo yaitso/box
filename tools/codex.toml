@@ -10,3 +10,15 @@ web_search_request = true
 plan_tool = true
 unified_exec = true
 streamable_shell = true
+
+[mcp_servers.chrome-devtools]
+command = "bunx"
+args = [
+    "chrome-devtools-mcp@latest",
+    "--browserUrl=http://127.0.0.1:9222",
+    "--viewport=1536x768",
+]
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["@playwright/mcp@latest", "--viewport-size=1536x768"]
