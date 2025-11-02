@@ -675,8 +675,7 @@
     },
     {
         "key": "cmd+r cmd+k",
-        "command": "-editor.action.defineKeybinding",
-        "when": "resource == 'vscode-userdata:/Users/khaidar/Library/Application%20Support/Cursor/User/keybindings.json'"
+        "command": "-editor.action.defineKeybinding"
     },
     {
         "key": "alt+cmd+k",
