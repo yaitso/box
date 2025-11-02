@@ -11,5 +11,6 @@ kount/kount.xcworkspace/
 state/
 .mcp.json
 rootkey.csv
+script/secret.nu
 tools/gitconfig.secret
 tools/ssh.secret

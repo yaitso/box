@@ -10,6 +10,11 @@ if ("env.nix" | path exists) {
   ^rm -f env.nix
 }
 
+if ("script/secret.nu" | path exists) {
+  print "[precommit] check secrets"
+  ^nu script/secret.nu
+}
+
 let tmpfile = (mktemp -t precommit.XXXXXX)
 
 print "[precommit] format nix"
