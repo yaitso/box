@@ -1,4 +1,5 @@
 Include ~/.orbstack/ssh/config
+Include ~/box/tools/ssh.secret
 
 Host yaitso
   IdentityFile ~/.ssh/yaitso
@@ -6,4 +7,3 @@ Host yaitso
 Host *
   AddKeysToAgent yes
   UseKeychain yes
-

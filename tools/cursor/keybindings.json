@@ -700,7 +700,8 @@
     },
     {
         "key": "shift+cmd+k",
-        "command": "cursorai.action.generateInTerminal"
+        "command": "cursorai.action.generateInTerminal",
+        "when": "!editorFocus"
     },
     {
         "key": "cmd+k",

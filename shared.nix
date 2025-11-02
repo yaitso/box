@@ -26,7 +26,7 @@
       hyperfine
       jj
       jq
-      minikube  
+      minikube
       nix-direnv
       nixd
       nixfmt
@@ -55,19 +55,7 @@
 
   programs.nushell = {
     enable = true;
-
-    envFile.text = ''
-      $env.PATH = ($env.PATH | split row (char esep) | prepend [
-        $"($env.HOME)/.local/bin"
-        $"($env.HOME)/.nix-profile/bin"
-        "/nix/var/nix/profiles/default/bin"
-        "/usr/local/bin"
-      ])
-
-      $env.EDITOR = "hx"
-      $env.DIRENV_LOG_FORMAT = ""
-    '';
-
+    envFile.source = ./script/env.nu;
     configFile.source = ./script/shell.nu;
   };
 
@@ -78,9 +66,10 @@
 
   programs.git = {
     enable = true;
+    includes = [
+      { path = "~/box/tools/gitconfig"; }
+    ];
     settings = {
-      user.name = user.fullname;
-      user.email = user.email;
       init.defaultBranch = "master";
       push.default = "simple";
       pull.rebase = false;
