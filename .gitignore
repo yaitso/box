@@ -2,7 +2,6 @@ THINKS.md
 TODO.md
 .env
 .env.*
-.envrc.example
 env.nix
 kount/kount.db
 kount/Derived/
@@ -11,6 +10,4 @@ kount/kount.xcworkspace/
 state/
 .mcp.json
 rootkey.csv
-script/secret.nu
-tools/gitconfig.secret
-tools/ssh.secret
+*secret*
