@@ -29,7 +29,7 @@ $env.PROMPT_COMMAND = {
   let reset = (ansi reset)
   let host = (hostname | str trim)
   
-  $"($pink)(whoami)($yellow)@($green)($host) ($purple)(pwd)($reset) nu > "
+  $"($pink)(whoami)($yellow)@($green)($host) ($purple)(pwd)($reset) ❯ "
 }
 
 $env.BASH_DEFAULT_TIMEOUT_MS = 3600000

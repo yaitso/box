@@ -125,26 +125,75 @@
         "NB",
         "PLUGIN"
     ],
+    "todo-tree.highlights.enabled": true,
+    "todo-tree.highlights.defaultHighlight": {
+        "type": "text-and-comment",
+        "foreground": "#000000",
+        "background": "#02ffcf"
+    },
     "todo-tree.highlights.customHighlight": {
         "TODO": {
             "icon": "bug",
-            "type": "text-and-comment"
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
         },
         "FIXME": {
             "icon": "flame",
-            "type": "text-and-comment"
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
         },
         "NB": {
             "icon": "squirrel",
-            "type": "text-and-comment"
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
         },
         "HACK": {
             "icon": "smiley",
-            "type": "text-and-comment"
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "BUG": {
+            "icon": "bug",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "XXX": {
+            "icon": "alert",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
         },
         "PLUGIN": {
             "icon": "zap",
-            "type": "text-and-comment"
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "[ ]": {
+            "icon": "circle",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "[x]": {
+            "icon": "check",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
         }
     },
     "todo-tree.general.revealBehaviour": "end of todo",
@@ -226,5 +275,6 @@
     },
     "[jsonc]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "cursor.cpp.disabledLanguages": ["plaintext", "markdown"]
 }
