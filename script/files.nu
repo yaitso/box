@@ -19,6 +19,7 @@ let files = [
   { src: "script/build.nu", dst: $"($nu_dir)/build.nu" }
   { src: "script/nu.nu", dst: $"($nu_dir)/nu.nu" }
   { src: "script/shell.nu", dst: $"($nu_dir)/shell.nu" }
+  { src: "script/br", dst: ".local/bin/br" }
   { src: "GLOBAL.md", dst: ".codex/AGENTS.md" }
   { src: "GLOBAL.md", dst: ".claude/CLAUDE.md" }
 ]

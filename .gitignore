@@ -13,3 +13,4 @@ rootkey.csv
 *secret*
 .venv/
 script/count.py
+node_modules

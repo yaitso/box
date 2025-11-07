@@ -403,6 +403,68 @@
     <tool name="jq">json processor</tool>
     <tool name="gh">github cli</tool>
     <tool name="tokei">code statistics</tool>
+    <tool name="br" severity="consistent">
+      browser automation via CDP + moondream vision ($0.00023/request)
+      
+      commands:
+      - br list_windows                            id|title|tabs (root windows only)
+      - br list_tabs "target-id"                   id|title (tabs in window)
+      - br new_window "url"                        returns target-id
+      - br goto "target-id" "url"                  navigate
+      - br screenshot "target-id" "name"           → /tmp/br_name.png
+      - br point "target-id" "name" "prompt"       moondream → x,y coords
+      - br click "target-id" "name" "prompt"       vision → click
+      - br click_in_new_tab "id" "name" "prompt"   vision → tab, returns target-id
+      - br eval "target-id" "js-code"              execute CDP JS
+      
+      limitation: CDP automation doesn't preserve window-tab relationships
+      (tabs opened via click_in_new_tab won't show in list_tabs for that window)
+      solution: manually track tab IDs in bash variables
+      
+      example workflow (systematic exploration of bits-ui docs):
+      
+      1) create isolated window + capture:
+         WIN=$(br new_window "bits-ui.com/docs/introduction")
+         sleep 2
+         br screenshot "$WIN" "page"
+      
+      2) read screenshot, identify elements:
+         # use read_file /tmp/br_page.png
+         # see: Accordion, Button, Combobox in sidebar
+      
+      3) batch find coords via moondream:
+         ACC=$(br point "$WIN" "page" "Accordion link")
+         BTN=$(br point "$WIN" "page" "Button link")
+         CMB=$(br point "$WIN" "page" "Combobox link")
+         echo "found: $ACC $BTN $CMB"
+      
+      4) batch open tabs, collect IDs manually:
+         TAB1=$(br click_in_new_tab "$WIN" "page" "Accordion link")
+         TAB2=$(br click_in_new_tab "$WIN" "page" "Button link")
+         TAB3=$(br click_in_new_tab "$WIN" "page" "Combobox link")
+         TABS="$TAB1 $TAB2 $TAB3"
+         echo "tracking tabs: $TABS"
+      
+      5) immediately track with todo tool:
+         # todo_write: "window $WIN has tabs $TABS (bits-ui components)"
+         # critical: prevents forgetting which tabs to revisit
+      
+      6) systematic examination using tracked IDs:
+         for TAB in $TABS; do
+           br screenshot "$TAB" "tab_$TAB"
+           sleep 1
+           # read_file each screenshot
+           # extract data, interact, repeat
+         done
+      
+      key principles:
+      - always store returned target-ids in bash vars immediately
+      - screenshot → read → analyze → act pattern
+      - batch moondream calls when finding multiple elements
+      - todo_write immediately after opening tabs with their IDs
+      - isolated windows don't pollute user's browser
+      - manual tracking >> relying on CDP relationships
+    </tool>
   </available_tools>
 
   <package_management severity="critical">
