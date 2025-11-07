@@ -1,13 +1,40 @@
 #!/usr/bin/env bun
 
-import { cdpEval, cdpCommand, listTargets, getTarget } from './lib/cdp';
-import { findCoords } from './lib/vision';
+import { cdp_eval, cdp_cmd, list_targets } from './cdp';
+import { find_coords, img_path, js_snippets } from './vision';
 
 const [cmd, ...args] = Bun.argv.slice(2);
 
-const commands: Record<string, (args: string[]) => Promise<void>> = {
+type Cmd = (args: string[]) => Promise<void>;
+
+const require_args = (args: string[], count: number, usage: string) => {
+  if (args.length < count) throw new Error(`usage: ${usage}`);
+};
+
+const split_prompt_args = (args: string[], beforePrompt: number): [string[], string] => {
+  const before = args.slice(0, beforePrompt);
+  const prompt = args.slice(beforePrompt).join(' ');
+  if (!prompt) throw new Error('prompt required');
+  return [before, prompt];
+};
+
+async function dispatch_mouse(type: 'mousePressed' | 'mouseReleased', x: number, y: number, targetId: string) {
+  await cdp_cmd('Input.dispatchMouseEvent', { type, x, y, button: 'middle', clickCount: 1 }, targetId);
+}
+
+async function wait_for_new_tab(idsBefore: Set<string>, maxAttempts = 10): Promise<string | null> {
+  for (let i = 0; i < maxAttempts; i++) {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const targetsAfter = await list_targets();
+    const newTabs = targetsAfter.filter((t: any) => t.type === 'page' && !idsBefore.has(t.id));
+    if (newTabs.length > 0) return newTabs[0].id;
+  }
+  return null;
+}
+
+const commands: Record<string, Cmd> = {
   async list_windows() {
-    const targets = await listTargets();
+    const targets = await list_targets();
     const pages = targets.filter((t: any) => t.type === 'page');
     
     const windowMap = new Map<string, any[]>();
@@ -16,171 +43,126 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
     for (const page of pages) {
       if (!page.openerId) {
         rootWindows.add(page.id);
-        if (!windowMap.has(page.id)) {
-          windowMap.set(page.id, []);
-        }
+        if (!windowMap.has(page.id)) windowMap.set(page.id, []);
       }
     }
     
     for (const page of pages) {
       if (page.openerId && rootWindows.has(page.openerId)) {
-        if (!windowMap.has(page.openerId)) {
-          windowMap.set(page.openerId, []);
-        }
+        if (!windowMap.has(page.openerId)) windowMap.set(page.openerId, []);
         windowMap.get(page.openerId)!.push(page);
       }
     }
     
-    const windows = Array.from(rootWindows).map(id => {
+    Array.from(rootWindows).forEach(id => {
       const rootPage = pages.find((p: any) => p.id === id);
       const tabs = windowMap.get(id) || [];
-      return [id, rootPage?.title || rootPage?.url || 'untitled', tabs.length + 1];
-    });
-    
-    windows.forEach(w => {
-      console.log(`${w[0]}|${w[1]}|${w[2]}`);
+      console.log(`${id}|${rootPage?.title || rootPage?.url || 'untitled'}|${tabs.length + 1}`);
     });
   },
 
   async list_tabs(args) {
+    require_args(args, 1, 'br list_tabs "window-id"');
     const [targetId] = args;
-    if (!targetId) throw new Error('usage: br list_tabs <target-id>');
-    
-    const targets = await listTargets();
+    const targets = await list_targets();
     const pages = targets.filter((t: any) => t.type === 'page');
-    
-    const windowTabs = pages.filter((t: any) => 
-      t.id === targetId || t.openerId === targetId
-    );
-    
-    windowTabs.forEach((t: any) => {
-      console.log(`${t.id}|${t.title}`);
-    });
+    pages.filter((t: any) => t.id === targetId || t.openerId === targetId)
+      .forEach((t: any) => console.log(`${t.id}|${t.title}`));
   },
 
   async new_window(args) {
-    const [url] = args;
-    if (!url) throw new Error('usage: br new_window <url>');
-    const result = await cdpCommand('Target.createTarget', { url, newWindow: true, background: false }) as any;
+    require_args(args, 1, 'br new_window "url"');
+    const result = await cdp_cmd('Target.createTarget', { 
+      url: args[0], 
+      newWindow: true, 
+      background: false 
+    }) as any;
     console.log(result.targetId);
   },
 
   async new_tab(args) {
+    require_args(args, 2, 'br new_tab "tab-id" "url"');
     const [targetId, url] = args;
-    if (!url) throw new Error('usage: br new_tab <target-id> <url>');
-    const result = await cdpCommand('Target.createTarget', { url }, targetId) as any;
-    console.log(result.targetId);
-  },
-
-  async goto(args) {
-    const [targetId, url] = args;
-    if (!targetId || !url) throw new Error('usage: br goto <target-id> <url>');
-    await cdpCommand('Page.navigate', { url }, targetId);
-    console.log(`navigated to: ${url}`);
-  },
-
-  async screenshot(args) {
-    const [targetId, name] = args;
-    if (!targetId || !name) throw new Error('usage: br screenshot <target-id> <name>');
     
-    const result = await cdpCommand('Page.captureScreenshot', { format: 'png' }, targetId) as any;
-    const buffer = Buffer.from(result.data, 'base64');
-    const path = `/tmp/br_${name}.png`;
-    await Bun.write(path, buffer);
-    console.log(path);
-  },
-
-  async point(args) {
-    const [targetId, name, ...promptParts] = args;
-    if (!targetId || !name || promptParts.length === 0) {
-      throw new Error('usage: br point <target-id> <screenshot-name> <prompt>');
-    }
+    const coords = await cdp_eval(`
+      (() => {
+        const link = document.querySelector('a[href]');
+        if (!link) return null;
+        const rect = link.getBoundingClientRect();
+        return { x: rect.left + rect.width/2, y: rect.top + rect.height/2 };
+      })()
+    `, targetId) as any;
     
-    const prompt = promptParts.join(' ');
-    const imagePath = `/tmp/br_${name}.png`;
-    const coords = await findCoords(imagePath, prompt, targetId);
-    console.log(`${coords.x},${coords.y}`);
-  },
-
-  async click(args) {
-    const [targetId, name, ...promptParts] = args;
-    if (!targetId || !name || promptParts.length === 0) {
-      throw new Error('usage: br click <target-id> <screenshot-name> <prompt>');
-    }
+    if (!coords) throw new Error('no clickable links found on page');
     
-    const prompt = promptParts.join(' ');
-    const imagePath = `/tmp/br_${name}.png`;
-    const { x, y } = await findCoords(imagePath, prompt, targetId);
+    const targetsBefore = await list_targets();
+    const idsBefore: Set<string> = new Set(targetsBefore.map((t: any) => t.id as string));
     
-    const result = await cdpEval(`
-      let el = document.elementFromPoint(${x}, ${y});
-      if (el) {
-        let clickTarget = el.closest('a') || el.querySelector('a') || el;
-        clickTarget.click();
-        'clicked at ${x},${y}: ' + clickTarget.tagName + (clickTarget.href ? ' -> ' + clickTarget.href : '');
-      } else {
-        'no element at ${x},${y}';
-      }
-    `, targetId);
-    console.log(result);
-  },
-
-  async click_in_new_tab(args) {
-    const [targetId, name, ...promptParts] = args;
-    if (!targetId || !name || promptParts.length === 0) {
-      throw new Error('usage: br click_in_new_tab <target-id> <screenshot-name> <prompt>');
-    }
+    await dispatch_mouse('mousePressed', coords.x, coords.y, targetId);
+    await dispatch_mouse('mouseReleased', coords.x, coords.y, targetId);
     
-    const prompt = promptParts.join(' ');
-    const imagePath = `/tmp/br_${name}.png`;
-    const { x, y } = await findCoords(imagePath, prompt, targetId);
+    const newTabId = await wait_for_new_tab(idsBefore);
     
-    const targetsBefore = await listTargets();
-    const idsBefore = new Set(targetsBefore.map((t: any) => t.id));
-    
-    await cdpCommand('Input.dispatchMouseEvent', {
-      type: 'mousePressed',
-      x,
-      y,
-      button: 'middle',
-      clickCount: 1
-    }, targetId);
-    
-    await cdpCommand('Input.dispatchMouseEvent', {
-      type: 'mouseReleased',
-      x,
-      y,
-      button: 'middle',
-      clickCount: 1
-    }, targetId);
-    
-    let newTab = null;
-    for (let i = 0; i < 6; i++) {
+    if (newTabId) {
       await new Promise(resolve => setTimeout(resolve, 500));
-      const targetsAfter = await listTargets();
-      const newTabs = targetsAfter.filter((t: any) => 
-        t.type === 'page' && !idsBefore.has(t.id)
-      );
-      
-      if (newTabs.length > 0) {
-        newTab = newTabs[0];
-        break;
-      }
-    }
-    
-    if (newTab) {
-      console.log(newTab.id);
+      await cdp_cmd('Page.navigate', { url }, newTabId);
+      console.log(newTabId);
     } else {
       console.log('tab created but id unknown');
     }
   },
 
-  async eval(args) {
-    const [targetId, ...jsParts] = args;
-    if (!targetId || jsParts.length === 0) throw new Error('usage: br eval <target-id> <js-code>');
+  async goto(args) {
+    require_args(args, 2, 'br goto "tab-id" "url"');
+    const [targetId, url] = args;
+    await cdp_cmd('Page.navigate', { url }, targetId);
+    console.log(`navigated to: ${url}`);
+  },
+
+  async screenshot(args) {
+    require_args(args, 2, 'br screenshot "tab-id" "name"');
+    const [targetId, name] = args;
+    const result = await cdp_cmd('Page.captureScreenshot', { format: 'png' }, targetId) as any;
+    const buffer = Buffer.from(result.data, 'base64');
+    const path = img_path(name);
+    await Bun.write(path, buffer);
+    console.log(path);
+  },
+
+  async point(args) {
+    require_args(args, 3, 'br point "tab-id" "name" "prompt"');
+    const [[targetId, name], prompt] = split_prompt_args(args, 2);
+    const coords = await find_coords(img_path(name), prompt, targetId);
+    console.log(`${coords.x},${coords.y}`);
+  },
+
+  async click(args) {
+    require_args(args, 3, 'br click "tab-id" "name" "prompt"');
+    const [[targetId, name], prompt] = split_prompt_args(args, 2);
+    const { x, y } = await find_coords(img_path(name), prompt, targetId);
+    const result = await cdp_eval(js_snippets.click_at(x, y), targetId);
+    console.log(result);
+  },
+
+  async click_in_new_tab(args) {
+    require_args(args, 3, 'br click_in_new_tab "tab-id" "name" "prompt"');
+    const [[targetId, name], prompt] = split_prompt_args(args, 2);
+    const { x, y } = await find_coords(img_path(name), prompt, targetId);
     
-    const js = jsParts.join(' ');
-    const result = await cdpEval(js, targetId);
+    const targetsBefore = await list_targets();
+    const idsBefore: Set<string> = new Set(targetsBefore.map((t: any) => t.id as string));
+    
+    await dispatch_mouse('mousePressed', x, y, targetId);
+    await dispatch_mouse('mouseReleased', x, y, targetId);
+    
+    const newTabId = await wait_for_new_tab(idsBefore);
+    console.log(newTabId || 'tab created but id unknown');
+  },
+
+  async eval(args) {
+    require_args(args, 2, 'br eval "tab-id" "js-code"');
+    const [targetId, ...jsParts] = args;
+    const result = await cdp_eval(jsParts.join(' '), targetId);
     if (result !== undefined) {
       console.log(typeof result === 'object' ? JSON.stringify(result, null, 2) : result);
     }
@@ -188,18 +170,27 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
 };
 
 if (!cmd || !commands[cmd]) {
-  console.error('usage: br <command> [args...]');
-  console.error('\ncommands:');
-  console.error('  list_windows                        list windows: id|tabs|title');
-  console.error('  list_tabs <target-id>               list tabs in window: id|url|title');
-  console.error('  new_window <url>                    create window, returns target-id');
-  console.error('  new_tab <target-id> <url>           create tab in window');
-  console.error('  goto <target-id> <url>              navigate to url');
-  console.error('  screenshot <target-id> <name>       save as /tmp/br_<name>.png');
-  console.error('  point <target-id> <name> <prompt>   find coords via moondream');
-  console.error('  click <target-id> <name> <prompt>   vision → click');
-  console.error('  click_in_new_tab <id> <name> <p>    vision → new tab, returns target-id');
-  console.error('  eval <target-id> <js-code>          execute CDP JS');
+  console.log(`
+┌────────────────────────────────────────────────────┐
+│ br — browser automation via CDP + moondream vision │
+└────────────────────────────────────────────────────┘
+
+window management
+  list_windows                         list root windows
+  list_tabs "window-id"                list tabs in window
+  new_window "url"                     create window → tab-id
+  new_tab "tab-id" "url"               create tab in window → tab-id
+
+navigation
+  goto "tab-id" "url"                  navigate to url
+  eval "tab-id" "js-code"              execute javascript
+
+vision + interaction
+  screenshot "tab-id" "name"           save → /tmp/br_name.png
+  point "tab-id" "name" "prompt"       moondream → x,y coords
+  click "tab-id" "name" "prompt"       vision → click element
+  click_in_new_tab "tab-id" "name" "p" vision → click → new tab
+`);
   process.exit(1);
 }
 

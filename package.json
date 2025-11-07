@@ -2,5 +2,8 @@
   "dependencies": {
     "moondream": "^0.1.1"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "^1.3.1"
+  }
 }

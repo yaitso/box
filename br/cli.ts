@@ -1,102 +1,74 @@
 #!/usr/bin/env bun
 
-import { cdpEval, cdpCommand } from './lib/cdp';
-import { findCoords } from './lib/vision';
+import { cdp_eval, cdp_cmd } from './cdp';
+import { find_coords, img_path, js_snippets } from './vision';
 import { spawnSync } from 'child_process';
 
 const [cmd, ...args] = Bun.argv.slice(2);
 
-const commands: Record<string, (args: string[]) => Promise<void>> = {
+type Cmd = (args: string[]) => Promise<void>;
+
+const require_args = (args: string[], count: number, usage: string) => {
+  if (args.length < count) throw new Error(`usage: ${usage}`);
+};
+
+const commands: Record<string, Cmd> = {
   async eval(args) {
-    const [js] = args;
-    if (!js) throw new Error('usage: br eval <js-code>');
-    const result = await cdpEval(js);
+    require_args(args, 1, 'br eval <js-code>');
+    const result = await cdp_eval(args.join(' '));
     if (result !== undefined) {
       console.log(typeof result === 'object' ? JSON.stringify(result, null, 2) : result);
     }
   },
 
   async new_tab(args) {
-    const [url] = args;
-    if (!url) throw new Error('usage: br new_tab <url>');
-    await cdpCommand('Target.createTarget', { url });
-    console.log(`new tab: ${url}`);
+    require_args(args, 1, 'br new_tab <url>');
+    await cdp_cmd('Target.createTarget', { url: args[0] });
+    console.log(`new tab: ${args[0]}`);
   },
 
   async new_window(args) {
-    const [url] = args;
-    if (!url) throw new Error('usage: br new_window <url>');
-    await cdpCommand('Target.createTarget', { url, newWindow: true, background: false });
-    console.log(`new window: ${url}`);
+    require_args(args, 1, 'br new_window <url>');
+    await cdp_cmd('Target.createTarget', { url: args[0], newWindow: true, background: false });
+    console.log(`new window: ${args[0]}`);
   },
 
   async screenshot(args) {
-    const [name] = args;
-    if (!name) throw new Error('usage: br screenshot <name>');
-    
-    const result = await cdpCommand('Page.captureScreenshot', { format: 'png' }) as any;
+    require_args(args, 1, 'br screenshot <name>');
+    const result = await cdp_cmd('Page.captureScreenshot', { format: 'png' }) as any;
     const buffer = Buffer.from(result.data, 'base64');
-    const path = `/tmp/br_${name}.png`;
+    const path = img_path(args[0]);
     await Bun.write(path, buffer);
     console.log(path);
   },
 
   async point(args) {
-    const [name, prompt] = args;
-    if (!name || !prompt) throw new Error('usage: br point <screenshot-name> <prompt>');
-    
-    const imagePath = `/tmp/br_${name}.png`;
-    const coords = await findCoords(imagePath, prompt);
+    require_args(args, 2, 'br point <screenshot-name> <prompt>');
+    const [name, ...promptParts] = args;
+    const coords = await find_coords(img_path(name), promptParts.join(' '));
     console.log(`${coords.x},${coords.y}`);
   },
 
   async click(args) {
-    const [name, prompt] = args;
-    if (!name || !prompt) throw new Error('usage: br click <screenshot-name> <prompt>');
-    
-    const imagePath = `/tmp/br_${name}.png`;
-    const { x, y } = await findCoords(imagePath, prompt);
-    
-    const result = await cdpEval(`
-      let el = document.elementFromPoint(${x}, ${y});
-      if (el) {
-        let clickTarget = el.closest('a') || el.querySelector('a') || el;
-        clickTarget.click();
-        'clicked at ${x},${y}: ' + clickTarget.tagName + (clickTarget.href ? ' -> ' + clickTarget.href : '');
-      } else {
-        'no element at ${x},${y}';
-      }
-    `);
+    require_args(args, 2, 'br click <screenshot-name> <prompt>');
+    const [name, ...promptParts] = args;
+    const { x, y } = await find_coords(img_path(name), promptParts.join(' '));
+    const result = await cdp_eval(js_snippets.click_at(x, y));
     console.log(result);
   },
 
   async click_in_new_tab(args) {
-    const [name, prompt] = args;
-    if (!name || !prompt) throw new Error('usage: br click_in_new_tab <screenshot-name> <prompt>');
-    
-    const imagePath = `/tmp/br_${name}.png`;
-    const { x, y } = await findCoords(imagePath, prompt);
-    
-    const href = await cdpEval(`
-      let el = document.elementFromPoint(${x}, ${y});
-      if (el) {
-        let target = el.closest('a') || el.querySelector('a');
-        if (target && target.href) {
-          target.href;
-        } else {
-          null;
-        }
-      } else {
-        null;
-      }
-    `);
+    require_args(args, 2, 'br click_in_new_tab <screenshot-name> <prompt>');
+    const [name, ...promptParts] = args;
+    const { x, y } = await find_coords(img_path(name), promptParts.join(' '));
+    const href = await cdp_eval(js_snippets.get_href(x, y));
     
     if (!href) {
       console.log(`no link found at ${x},${y}`);
       return;
     }
     
-    await cdpCommand('Target.createTarget', { url: href as string });
+    await cdp_cmd('Target.createTarget', { url: href as string });
     console.log(`opened in new tab: ${href}`);
   },
 
@@ -127,4 +99,3 @@ try {
   console.error('error:', error.message);
   process.exit(1);
 }
-
