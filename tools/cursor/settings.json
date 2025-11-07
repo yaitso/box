@@ -279,5 +279,6 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "cursor.cpp.disabledLanguages": ["plaintext", "markdown"],
-    "cursor.composer.queueMessageDefaultBehavior": "queue"
+    "cursor.composer.queueMessageDefaultBehavior": "queue",
+    "explorer.confirmDragAndDrop": false
 }

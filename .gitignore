@@ -12,3 +12,4 @@ state/
 rootkey.csv
 *secret*
 .venv/
+script/count.py

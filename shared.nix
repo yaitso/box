@@ -115,7 +115,6 @@
 
   home.activation.linkConfigFiles = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.nushell}/bin/nu ${./script/files.nu}
-    ${pkgs.nushell}/bin/nu ${./script/mcp.nu}
   '';
 
   home.activation.setupPython = config.lib.dag.entryAfter [ "writeBoundary" ] ''
