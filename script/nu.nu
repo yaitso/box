@@ -11,27 +11,30 @@ export def raw [...args] {
   ^claude --dangerously-skip-permissions --setting-sources "" --strict-mcp-config ...$args
 }
 
-# vanilla claude print mode with json output
-# examples:
-#   rawp "what is 2+2" | jq -r '.[] | select(.type=="result") | .result'
-#   → 2 + 2 = 4
-#
-#   rawp "what is 2+2" | jq -r '.[] | select(.type=="assistant") | .message.content[0].text'
-#   → 2 + 2 = 4
-#
-#   rawp "what is 2+2" | jq '.[] | select(.type=="result") | {result, total_cost_usd, duration_ms}'
-#   → {"result": "2 + 2 = 4", "total_cost_usd": 0.0060236, "duration_ms": 2476}
-export def rawp [...args] {
-  ^claude --dangerously-skip-permissions --setting-sources "" --strict-mcp-config -p --output-format json ...$args
+export def ai [...args] {
+  let question = if ($args | length) == 2 {
+    $args.0
+  } else if ($args | length) == 1 {
+    $args.0
+  } else {
+    $args | str join ' '
+  }
+  
+  let schema_arg = if ($args | length) == 2 {
+    ["--json-schema" $args.1]
+  } else {
+    []
+  }
+  
+  ^claude --dangerously-skip-permissions --setting-sources "" --strict-mcp-config -p --output-format json ...$schema_arg $question
 }
 
-# schema.py snippet workflow
-# opens cursor at $1 placeholder, fill in class name and fields, save & close
-# automatically runs uv run schema.py then resets file back to template
 export def sch [] {
   cd ~/box
   cursor --wait -g schema.py:7:7
-  uv run schema.py
+  let output = (uv run schema.py | complete)
+  print $output.stdout
+  $output.stdout | pbcopy
   git checkout schema.py
 }
 

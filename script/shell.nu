@@ -10,7 +10,9 @@ $env.config = {
         }
         {
           condition: {|before, after|
-            (".venv/bin/activate.nu" | path exists) and (overlay list | find "activate" | is-empty)
+            let venv_path = ($after | path join ".venv/bin/activate.nu")
+            let expected_venv = ($after | path join ".venv")
+            ($venv_path | path exists) and ($env.VIRTUAL_ENV? != $expected_venv)
           }
           code: "overlay use .venv/bin/activate.nu"
         }

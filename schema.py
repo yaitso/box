@@ -1,11 +1,9 @@
-# type: ignore
-# pyright: ignore
-from enum import Enum
+from enum import Enum  # noqa: F401
 from pydantic import BaseModel
 
 
-class $1(BaseModel):
-    $2
+class Class(BaseModel):
+    field: str
 
 
-print($1.model_json_schema())
+print(Class.model_json_schema())

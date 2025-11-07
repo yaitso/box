@@ -11,3 +11,4 @@ state/
 .mcp.json
 rootkey.csv
 *secret*
+.venv/

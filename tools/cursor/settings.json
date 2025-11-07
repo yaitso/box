@@ -53,7 +53,8 @@
         ".vimrc": "viml",
         "*.md": "markdown",
         "*.sex": "racket",
-        "*.sh": "shellscript"
+        "*.sh": "shellscript",
+        "*.toml": "toml"
     },
     "terminal.integrated.defaultProfile.osx": "nu",
     "terminal.integrated.profiles.osx": {
@@ -114,6 +115,7 @@
         "{git,gitlens,git-graph}:/**/*.{md,csv,svg}": "default"
     },
     "python.defaultInterpreterPath": "python3",
+    "python.terminal.activateEnvironment": false,
     "todo-tree.general.tags": [
         "BUG",
         "HACK",

@@ -5,3 +5,6 @@ description = "box"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = ["pydantic", "result"]
+
+[tool.basedpyright]
+reportUnusedImport = "none"
