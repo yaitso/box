@@ -716,5 +716,13 @@
         "key": "shift+cmd+k",
         "command": "-editor.action.inlineDiffs.focusEditor",
         "when": "editorHasPromptBar && editorPromptBarFocused"
+    },
+    {
+        "key": "alt+b",
+        "command": "workbench.action.toggleAuxiliaryBar"
+    },
+    {
+        "key": "alt+cmd+b",
+        "command": "-workbench.action.toggleAuxiliaryBar"
     }
 ]

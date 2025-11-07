@@ -26,6 +26,8 @@
       hyperfine
       jj
       jq
+      kubectl
+      lazygit
       minikube
       nix-direnv
       nixd

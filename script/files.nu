@@ -58,9 +58,10 @@ if ($uv_python_path | path exists) {
     | path join "bin/python3.14"
 
   if ($python314_bin | path exists) {
-    ^ln -sf $python314_bin ($bin_dir | path join "python3.14")
+    ^ln -sf $python314_bin ($bin_dir | path join "py")
     ^ln -sf $python314_bin ($bin_dir | path join "python")
     ^ln -sf $python314_bin ($bin_dir | path join "python3")
+    ^ln -sf $python314_bin ($bin_dir | path join "python3.14")
     print $"[files] linked python to ($bin_dir)/python"
   }
 }

@@ -17,6 +17,15 @@ $env.config = {
       ]
     }
   }
+  keybindings: [
+    {
+      name: accept_suggestion
+      modifier: none
+      keycode: tab
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: historyhintcomplete }
+    }
+  ]
 }
 
 $env.PROMPT_INDICATOR = ""
