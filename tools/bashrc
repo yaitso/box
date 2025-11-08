@@ -1,5 +1,7 @@
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
+shopt -s expand_aliases
+
 n() {
   if [ $# -eq 0 ]; then
     nu -l -c "$(cat)"
