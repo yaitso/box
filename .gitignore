@@ -7,7 +7,6 @@ kount/kount.db
 kount/Derived/
 kount/kount.xcodeproj/
 kount/kount.xcworkspace/
-state/
 .mcp.json
 rootkey.csv
 *secret*

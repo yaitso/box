@@ -57,10 +57,7 @@
     if command -v nu &>/dev/null; then
       nu ${./script/macos.nu} || true
       nu ${./script/files.nu} || true
-    fi
-
-    if [ -x ${./kount/kount.sh} ]; then
-      cd ${./kount} && ${./kount/kount.sh} || true
+      nu ${./kount/kount.nu} || true
     fi
   '';
 }

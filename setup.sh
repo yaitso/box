@@ -55,7 +55,7 @@ load_env_overrides_and_emit_env_nix() {
 
   BOX_USERNAME="${BOX_USERNAME:-yaitso}"
   BOX_FULLNAME="${BOX_FULLNAME:-Yai Tso}"
-  BOX_EMAIL="${BOX_EMAIL:-root@yaitso.com}"
+  BOX_EMAIL="${BOX_EMAIL:-none@yaitso.com}"
 
   ENV_NIX_CONTENT=$(
     cat <<EOF

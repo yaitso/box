@@ -126,7 +126,7 @@
   home.file.".local/bin/brave-9228" = {
     executable = true;
     text = ''
-      #!/usr/bin/env bashni
+      #!/usr/bin/env bash
       set -euo pipefail
 
       APP1="$HOME/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"

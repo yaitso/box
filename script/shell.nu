@@ -37,10 +37,18 @@ $env.PROMPT_COMMAND = {
   let yellow = (ansi --escape '38;5;220m')
   let green = (ansi --escape '38;5;79m')
   let purple = (ansi --escape '38;5;177m')
+  let sky_blue = (ansi --escape '38;5;81m')
   let reset = (ansi reset)
   let host = (hostname | str trim)
-  
-  $"($pink)(whoami)($yellow)@($green)($host) ($purple)(pwd)($reset) ❯ "
+
+  let venv_prefix = if ($env.VIRTUAL_ENV? != null) {
+    let venv_name = ($env.VIRTUAL_ENV | path basename)
+    $"($sky_blue)($venv_name)($reset)  "
+  } else {
+    ""
+  }
+
+  $"($venv_prefix)($pink)(whoami)($yellow)@($green)($host) ($purple)(pwd)($reset) ❯ "
 }
 
 $env.BASH_DEFAULT_TIMEOUT_MS = 3600000

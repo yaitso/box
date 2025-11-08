@@ -87,25 +87,27 @@
   </package_installation_protocol>
 
   <file_management severity="critical">
-    config files are managed via HARD LINKS, not symlinks.
+    config files are managed via SYMLINKS created by files.nu.
 
-    files.nu (called via home.activation.linkConfigFiles) creates hard links
-    from ~/box/* → actual config locations.
+    files.nu (called via home.activation.linkConfigFiles) creates symlinks
+    from actual config locations → ~/box/* source files.
 
     this enables BIDIRECTIONAL editing:
-    - edit ~/box/helix.toml → changes appear in ~/.config/helix/config.toml
-    - app writes to ~/.config/helix/config.toml → changes appear in ~/box/helix.toml
+    - edit ~/box/tools/cursor/settings.json → changes appear in cursor immediately
+    - edit via native UI (CMD+. in cursor) → changes appear in ~/box/tools/cursor/settings.json
+    - edit ~/.config/helix/config.toml → changes appear in ~/box/tools/helix.toml
     - git tracks everything in ~/box
     - no permission issues with apps that need to write their own configs
 
-    hard links work bc both paths share same inode → same file, two names.
+    symlinks point from config locations → source files in ~/box.
+    editing either location updates the same file instantly.
 
     when adding new config files:
     1. add entry to files.nu mapping list
-    2. run ./setup.sh to create hard link
+    2. run ./setup.sh to create symlink
 
     DO NOT use home.file.* for config files that apps need to write to.
-    use files.nu hard link approach instead.
+    use files.nu symlink approach instead.
   </file_management>
 
   <repo_structure>
@@ -122,8 +124,7 @@
     │   ├── theme/ (all color schemes)
     │   ├── *.toml (helix, codex configs)
     │   ├── vim, ghostty, karabiner.json
-    ├── kount/ (macos app)
-    └── state/ (system snapshots)
+    └── kount/ (macos app)
 
     all tool configs unified under tools/ for easy navigation.
   </repo_structure>
