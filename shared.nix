@@ -9,6 +9,10 @@
 {
   home.stateVersion = "24.11";
 
+  home.sessionVariables = {
+    BASH_ENV = "$HOME/.bashrc";
+  };
+
   home.packages =
     (with pkgs; [
       ast-grep

@@ -10,6 +10,8 @@ let files = [
   { src: "tools/theme/black.toml", dst: ".config/helix/themes/black.toml" }
   { src: "tools/ssh", dst: ".ssh/config" }
   { src: "tools/bashrc", dst: ".bashrc" }
+  { src: "tools/bash_profile", dst: ".bash_profile" }
+  { src: "tools/zshenv", dst: ".zshenv" }
   { src: "tools/karabiner.json", dst: ".config/karabiner/karabiner.json" }
   { src: "tools/helix.toml", dst: ".config/helix/config.toml" }
   { src: "tools/ghostty", dst: ".config/ghostty/config" }
