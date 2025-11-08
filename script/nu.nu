@@ -72,7 +72,7 @@ export def ll [] { ls -ald | sort-by modified }
 export def b [...args] { if ($args | is-empty) { ^bash } else { ^bash -c $"($args | str join ' ')" } }
 export def gg [] {
   git add .
-  git commit -m "yaitso"
+  do -i { git commit -m "yaitso" }
   git push -f
 }
 
