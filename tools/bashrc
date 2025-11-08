@@ -1,6 +1,8 @@
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
-shopt -s expand_aliases
+if [ -n "$BASH_VERSION" ]; then
+  shopt -s expand_aliases
+fi
 
 n() {
   if [ $# -eq 0 ]; then
