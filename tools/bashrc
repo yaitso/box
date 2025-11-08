@@ -1,0 +1,10 @@
+n() {
+  if [ $# -eq 0 ]; then
+    nu -l -c "$(cat)"
+  else
+    nu -l -c "$@"
+  fi
+}
+
+alias gg="nu -l -c 'gg'"
+alias step="nu -l -c 'step'"

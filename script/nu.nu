@@ -76,6 +76,11 @@ export def gg [] {
   git push -f
 }
 
+export def step [] {
+  git add .
+  git commit -m "yaitso"
+}
+
 export def repo [name: string] {
   cd $env.HOME
   mkdir $name

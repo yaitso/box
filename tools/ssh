@@ -1,7 +1,9 @@
 Include ~/.orbstack/ssh/config
 Include ~/box/tools/ssh.secret
 
-Host yaitso
+Host github.com
+  HostName github.com
+  User git
   IdentityFile ~/.ssh/yaitso
 
 Host *

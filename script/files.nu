@@ -9,6 +9,7 @@ let files = [
   { src: "tools/theme/black", dst: ".vim/colors/black.vim" }
   { src: "tools/theme/black.toml", dst: ".config/helix/themes/black.toml" }
   { src: "tools/ssh", dst: ".ssh/config" }
+  { src: "tools/bashrc", dst: ".bashrc" }
   { src: "tools/karabiner.json", dst: ".config/karabiner/karabiner.json" }
   { src: "tools/helix.toml", dst: ".config/helix/config.toml" }
   { src: "tools/ghostty", dst: ".config/ghostty/config" }

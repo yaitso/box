@@ -27,11 +27,9 @@
     MANDATORY workflow for ALL nix config changes:
 
     1. make changes to nix files (macos.nix, shared.nix, flake.nix, etc)
-    2. stage ALL changes: git add .
-    3. run ./setup.sh as separate tool call
-    4. verify changes work (test functionality, check configs applied)
-    5. if verification passes → commit with EXACT message: "yaitso"
-    6. push immediately: git push
+    2. run ./setup.sh as separate tool call
+    3. verify changes work (test functionality, check configs applied)
+    4. if verification passes → call `step`
 
     CRITICAL: commit message MUST be exactly "yaitso" — NOTHING else.
     no variation, no elaboration, no emojis, no "feat:", no "fix:".
@@ -42,11 +40,9 @@
 
     example correct workflow:
     - edit shared.nix
-    - git add .
     - ./setup.sh
     - verify git config shows correct email
-    - git commit -m "yaitso"
-    - git push
+    - step
 
     FORBIDDEN:
     - git commit -m "update git config"  ← WRONG
@@ -54,7 +50,22 @@
     - git commit -m "feat: yaitso"       ← WRONG
 
     CORRECT:
-    - git commit -m "yaitso"             ← ONLY THIS
+    - git commit -m "yaitso"             ← ONLY THIS (done via `step`)
+
+    <git_shortcuts severity="critical">
+      bash aliases available (via tools/bashrc):
+
+      `step` - atomic commit (MANDATORY for workflows)
+        - runs: git add . && git commit -m "yaitso"
+        - ALWAYS use this instead of manual git add/commit commands
+        - use proactively during atomic workflow
+        - does NOT push (push separately when appropriate)
+
+      `gg` - full atomic commit + force push workflow
+        - ONLY invoke when user explicitly writes "gg" in their message
+        - runs: git add . && git commit -m "yaitso" && git push -f
+        - NEVER use proactively without user approval
+    </git_shortcuts>
   </git_workflow>
 
   <package_installation_protocol severity="critical">

@@ -96,22 +96,6 @@
     defaultEditor = true;
   };
 
-  programs.ssh = {
-    enable = true;
-    enableDefaultConfig = false;
-    includes = [ "~/box/tools/ssh.secret" ];
-    matchBlocks."*" = {
-      addKeysToAgent = "yes";
-      extraOptions = {
-        UseKeychain = "yes";
-      };
-    };
-    matchBlocks."yaitso" = {
-      identityFile = "~/.ssh/yaitso";
-    };
-  };
-
-  home.file.".ssh/config".force = true;
 
   home.activation.linkConfigFiles = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.nushell}/bin/nu ${./script/files.nu}

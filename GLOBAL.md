@@ -238,23 +238,28 @@
       <atom is="atomic incremental development workflow.
 
         start from working state, make ONE small change, verify it works,
-        commit immediately with 'yaitso', push.
+        commit immediately with 'yaitso'.
 
         workflow:
         1. current state MUST be working (tests pass, builds succeed)
         2. make ONE small incremental change (single feature, single fix)
         3. test/verify the change works (run relevant commands, check output)
-        4. git add . && git commit -m 'yaitso' && git push
+        4. call `step`
         5. repeat from step 1
 
         NEVER batch multiple changes before committing. each change is atomic.
         if something breaks, you can git revert to last known good state.
 
+        CRITICAL: use `step` command for commits (defined in tools/bashrc).
+        `step` runs: git add . && git commit -m 'yaitso'
+        NEVER use manual git add/commit commands.
+        do NOT push during atomic workflow — commits accumulate locally.
+
         examples of atomic changes:
-        - add one package to nix config → test → commit
-        - add one hard link mapping → test → commit
-        - change one config value → test → commit
-        - add one feature flag → test → commit
+        - add one package to nix config → test → step
+        - add one hard link mapping → test → step
+        - change one config value → test → step
+        - add one feature flag → test → step
 
         this ensures every commit in history is a working state.
         no 'wip' commits, no broken intermediate states."/>
