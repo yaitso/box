@@ -16,6 +16,14 @@ oi() {
   echo "$oi_code"
 }
 
+step() {
+  nu -l -c 'step'
+}
+
+gg() {
+  nu -l -c 'gg'
+}
+
 if [[ $- == *i* ]]; then
   __oi_snippet() {
     local template=$'oi <<OI\n\nOI'
@@ -24,6 +32,3 @@ if [[ $- == *i* ]]; then
   }
   bind -x '"\C-o": __oi_snippet'
 fi
-
-alias gg="nu -l -c 'gg'"
-alias step="nu -l -c 'step'"
