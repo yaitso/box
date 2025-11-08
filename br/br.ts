@@ -169,6 +169,32 @@ const commands: Record<string, Cmd> = {
     }
   },
 
+  async upload_file(args) {
+    require_args(args, 3, 'br upload_file "tab-id" "selector" "file-path"');
+    const [targetId, selector, ...pathParts] = args;
+    const filePath = pathParts.join(' ');
+
+    const fileContent = await Bun.file(filePath).arrayBuffer();
+    const fileName = filePath.split('/').pop();
+    const base64 = Buffer.from(fileContent).toString('base64');
+
+    await cdp_eval(`
+      (async () => {
+        const base64 = '${base64}';
+        const fileName = '${fileName}';
+        const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+        const file = new File([bytes], fileName, { type: 'application/pdf' });
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        const input = document.querySelector('${selector}');
+        input.files = dt.files;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      })()
+    `, targetId);
+
+    console.log(`uploaded ${filePath} to ${selector}`);
+  },
+
   async screenshot_screen(args) {
     require_args(args, 1, 'br screenshot_screen "name"');
     const [name] = args;
@@ -263,6 +289,7 @@ vision + interaction (CDP)
   point "tab-id" "name" "prompt"       moondream → x,y coords
   click "tab-id" "name" "prompt"       vision → click element
   click_in_new_tab "tab-id" "name" "p" vision → click → new tab
+  upload_file "tab-id" "selector" "f"  upload file to input[type=file]
 
 OS-level automation
   screenshot_screen "name"             capture screen → /tmp/br_name.png
