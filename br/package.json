@@ -1,0 +1,11 @@
+{
+  "name": "br",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "br": "./br.ts"
+  },
+  "dependencies": {
+    "@nut-tree/nut-js": "^4.2.2"
+  }
+}

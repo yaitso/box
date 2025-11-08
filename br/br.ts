@@ -2,6 +2,7 @@
 
 import { cdp_eval, cdp_cmd, list_targets } from './cdp';
 import { find_coords, img_path, js_snippets } from './vision';
+import { $ } from 'bun';
 
 const [cmd, ...args] = Bun.argv.slice(2);
 
@@ -166,6 +167,74 @@ const commands: Record<string, Cmd> = {
     if (result !== undefined) {
       console.log(typeof result === 'object' ? JSON.stringify(result, null, 2) : result);
     }
+  },
+
+  async screenshot_screen(args) {
+    require_args(args, 1, 'br screenshot_screen "name"');
+    const [name] = args;
+    const path = img_path(name);
+    await $`screencapture -x ${path}`;
+    console.log(path);
+  },
+
+  async point_screen(args) {
+    require_args(args, 2, 'br point_screen "name" "prompt"');
+    const [[name], prompt] = split_prompt_args(args, 1);
+
+    const imgPath = img_path(name);
+    const imgSize = await $`sips -g pixelWidth -g pixelHeight ${imgPath}`.text();
+    const imgWidth = parseInt(imgSize.match(/pixelWidth: (\d+)/)?.[1] || '0');
+    const imgHeight = parseInt(imgSize.match(/pixelHeight: (\d+)/)?.[1] || '0');
+
+    const boundsStr = await $`osascript -e 'tell application "Finder" to get bounds of window of desktop'`.text();
+    const bounds = boundsStr.trim().split(', ').map(Number);
+    const logicalWidth = bounds[2];
+    const logicalHeight = bounds[3];
+
+    const scaleX = logicalWidth / imgWidth;
+    const scaleY = logicalHeight / imgHeight;
+
+    const coords = await find_coords(imgPath, prompt);
+    const logicalX = Math.round(coords.x * scaleX);
+    const logicalY = Math.round(coords.y * scaleY);
+
+    console.log(`${logicalX},${logicalY}`);
+  },
+
+  async click_screen(args) {
+    require_args(args, 1, 'br click_screen "x,y"');
+    const [coords] = args;
+    const [x, y] = coords.split(',').map(Number);
+    const script = `tell application "System Events" to click at {${x}, ${y}}`;
+    await $`osascript -e ${script}`;
+    console.log(`clicked at ${x},${y}`);
+  },
+
+  async type_screen(args) {
+    require_args(args, 1, 'br type_screen "text"');
+    const text = args.join(' ');
+    const script = `tell application "System Events" to keystroke "${text}"`;
+    await $`osascript -e ${script}`;
+    console.log(`typed: ${text}`);
+  },
+
+  async key_screen(args) {
+    require_args(args, 1, 'br key_screen "key"');
+    const [key] = args;
+    const keyMap: Record<string, string> = {
+      enter: '36',
+      return: '36',
+      tab: '48',
+      escape: '53',
+      space: '49',
+      delete: '51',
+      cmd: '55',
+      command: '55',
+    };
+    const keyCode = keyMap[key.toLowerCase()] || key;
+    const script = `tell application "System Events" to key code ${keyCode}`;
+    await $`osascript -e ${script}`;
+    console.log(`pressed: ${key}`);
   }
 };
 
@@ -185,11 +254,18 @@ navigation
   goto "tab-id" "url"                  navigate to url
   eval "tab-id" "js-code"              execute javascript
 
-vision + interaction
+vision + interaction (CDP)
   screenshot "tab-id" "name"           save → /tmp/br_name.png
   point "tab-id" "name" "prompt"       moondream → x,y coords
   click "tab-id" "name" "prompt"       vision → click element
   click_in_new_tab "tab-id" "name" "p" vision → click → new tab
+
+OS-level automation
+  screenshot_screen "name"             capture screen → /tmp/br_name.png
+  point_screen "name" "prompt"         moondream on screen → x,y coords
+  click_screen "x,y"                   OS-level click at coords
+  type_screen "text"                   keyboard input
+  key_screen "key"                     press specific key (enter, tab, etc)
 `);
   process.exit(1);
 }

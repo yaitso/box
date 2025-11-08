@@ -37,8 +37,19 @@ export async function find_coords(imagePath: string, prompt: string, targetId?: 
   const apiKey = process.env.MOONDREAM;
   if (!apiKey) throw new Error('MOONDREAM env var not set');
 
-  const viewport = await cdp_eval(js_snippets.viewport, targetId);
-  const { width, height } = JSON.parse(viewport as string);
+  let width: number, height: number;
+
+  if (targetId) {
+    const viewport = await cdp_eval(js_snippets.viewport, targetId);
+    const parsed = JSON.parse(viewport as string);
+    width = parsed.width;
+    height = parsed.height;
+  } else {
+    const { $ } = await import('bun');
+    const sipsOutput = await $`sips -g pixelWidth -g pixelHeight ${imagePath}`.text();
+    width = parseInt(sipsOutput.match(/pixelWidth: (\d+)/)?.[1] || '0');
+    height = parseInt(sipsOutput.match(/pixelHeight: (\d+)/)?.[1] || '0');
+  }
 
   const model = new vl({ apiKey });
   const imageData = await Bun.file(imagePath).arrayBuffer();

@@ -26,6 +26,10 @@ gg() {
   nu -l -c 'gg'
 }
 
+br() {
+  "$HOME/box/br/br.ts" "$@"
+}
+
 if [[ $- == *i* ]]; then
   __oi_snippet() {
     local template=$'oi <<OI\n\nOI'
