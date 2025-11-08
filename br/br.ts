@@ -205,6 +205,10 @@ const commands: Record<string, Cmd> = {
     require_args(args, 1, 'br click_screen "x,y"');
     const [coords] = args;
     const [x, y] = coords.split(',').map(Number);
+
+    await $`osascript -e 'tell application "Brave Browser" to activate'`;
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     const script = `tell application "System Events" to click at {${x}, ${y}}`;
     await $`osascript -e ${script}`;
     console.log(`clicked at ${x},${y}`);
