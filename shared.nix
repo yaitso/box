@@ -96,7 +96,6 @@
     defaultEditor = true;
   };
 
-
   home.activation.linkConfigFiles = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.nushell}/bin/nu ${./script/files.nu}
   '';

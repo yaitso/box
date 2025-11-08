@@ -1,3 +1,5 @@
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 n() {
   if [ $# -eq 0 ]; then
     nu -l -c "$(cat)"
@@ -5,6 +7,21 @@ n() {
     nu -l -c "$@"
   fi
 }
+
+oi() {
+  local oi_code=$(cat)
+  echo "[oi heredoc received]"
+  echo "$oi_code"
+}
+
+if [[ $- == *i* ]]; then
+  __oi_snippet() {
+    local template=$'oi <<OI\n\nOI'
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}${template}${READLINE_LINE:$READLINE_POINT}"
+    READLINE_POINT=$((READLINE_POINT + 8))
+  }
+  bind -x '"\C-o": __oi_snippet'
+fi
 
 alias gg="nu -l -c 'gg'"
 alias step="nu -l -c 'step'"
