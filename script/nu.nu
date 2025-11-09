@@ -86,14 +86,12 @@ export def repo [name: string] {
   mkdir $name
   cd $name
   git init
-
   if (ls ~/box/.envrc.example | is-not-empty) {
     cp ~/box/.envrc.example .envrc
   }
-
   touch .env
-
   ".envrc\n.env\n" | save .gitignore
+  cursor .
 }
 
 export def mojon [] {
