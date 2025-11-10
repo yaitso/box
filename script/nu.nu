@@ -70,15 +70,18 @@ export alias ls = ls -ald
 export def wh [...rest] { which -a ...$rest | uniq }
 export def ll [] { ls -ald | sort-by modified }
 export def b [...args] { if ($args | is-empty) { ^bash } else { ^bash -c $"($args | str join ' ')" } }
-export def gg [] {
+
+export def gg [...args] {
+  let msg = if ($args | is-empty) { "yaitso" } else { $args | str join ' ' }
   git add .
-  do -i { git commit -m "yaitso" }
+  do -i { git commit -m $msg }
   git push -f
 }
 
-export def step [] {
+export def step [...args] {
+  let msg = if ($args | is-empty) { "yaitso" } else { $args | str join ' ' }
   git add .
-  git commit -m "yaitso"
+  git commit -m $msg
 }
 
 export def repo [name: string] {
