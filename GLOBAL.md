@@ -264,6 +264,33 @@
         this ensures every commit in history is a working state.
         no 'wip' commits, no broken intermediate states."/>
     </workflows>
+
+    <git_shortcuts severity="critical">
+      bash aliases available (via tools/bashrc):
+
+      `step` - atomic commit (MANDATORY for atom workflow)
+        - runs: git add . && git commit -m "yaitso"
+        - ALWAYS use this instead of manual git add/commit commands
+        - use proactively during atomic workflow
+        - does NOT push (push separately when appropriate)
+
+      `gg` - full atomic commit + force push workflow
+        - ONLY invoke when user explicitly writes "gg" in their message
+        - runs: git add . && git commit -m "yaitso" && git push -f
+        - NEVER use proactively without user approval
+
+      CRITICAL: commit message MUST be exactly "yaitso" — NOTHING else.
+      no variation, no elaboration, no emojis, no "feat:", no "fix:".
+      just: yaitso
+
+      examples FORBIDDEN:
+      - git commit -m "update git config"  ← WRONG
+      - git commit -m "yaitso: add tuist"  ← WRONG
+      - git commit -m "feat: yaitso"       ← WRONG
+
+      CORRECT:
+      - git commit -m "yaitso"             ← ONLY THIS (done via `step`)
+    </git_shortcuts>
   </shortcuts>
 
   <tool_usage>
@@ -390,6 +417,30 @@
       this file (GLOBAL.md) is hard-linked to multiple locations via files.nu.
       editing any location updates all instantly.
     </claude_md_hierarchy>
+
+    <file_management severity="critical">
+      config files are managed via SYMLINKS created by files.nu.
+
+      files.nu (called via home.activation.linkConfigFiles) creates symlinks
+      from actual config locations → ~/box/* source files.
+
+      this enables BIDIRECTIONAL editing:
+      - edit ~/box/tools/cursor/settings.json → changes appear in cursor immediately
+      - edit via native UI (CMD+. in cursor) → changes appear in ~/box/tools/cursor/settings.json
+      - edit ~/.config/helix/config.toml → changes appear in ~/box/tools/helix.toml
+      - git tracks everything in ~/box
+      - no permission issues with apps that need to write their own configs
+
+      symlinks point from config locations → source files in ~/box.
+      editing either location updates the same file instantly.
+
+      when adding new config files:
+      1. add entry to files.nu mapping list
+      2. run ~/box/setup.sh to create symlink
+
+      DO NOT use home.file.* for config files that apps need to write to.
+      use files.nu symlink approach instead.
+    </file_management>
   </system_context>
 
   <available_tools severity="consistent">
@@ -475,10 +526,32 @@
   <package_management severity="critical">
     MANDATORY installation protocol:
 
-    if you want to install ANY new tool/package:
-    1. add it to ~/box/shared.nix in the home.packages list
-    2. run ~/box/setup.sh to install it
-    3. NEVER use brew install, apt install, or any other package manager
+    when user requests "install X":
+
+    FORBIDDEN: NEVER run `brew install X`, `npm install -g X`, or any direct package manager commands.
+
+    workflow:
+    1. ASSUME package name is correct — add to nix immediately, don't search first
+
+    2. for cross-platform CLI tools:
+       - add to ~/box/shared.nix home.packages
+       - run ~/box/setup.sh as separate tool call
+       - if build fails with "package not found" → THEN search for correct name
+
+    3. for macos-only GUI apps (casks):
+       - add to ~/box/macos.nix homebrew.casks (or homebrew.brews if formula)
+       - run ~/box/setup.sh as separate tool call
+
+    4. search strategy (only if installation fails):
+       - prefer searching github.com/NixOS/nixpkgs over `nix search`
+       - nix search is slow and verbose, avoid unless necessary
+
+    examples:
+    - "install gemini-cli" → add gemini-cli to shared.nix, run setup
+    - "install tuist" → add to macos.nix homebrew.casks
+    - "install ripgrep" → add to shared.nix (already cross-platform CLI)
+
+    rationale: user knows package names, trust them. searching first wastes time.
 
     this is NON-NEGOTIABLE. all system packages managed through nix.
   </package_management>
