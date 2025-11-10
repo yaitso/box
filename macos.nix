@@ -1,14 +1,14 @@
-{ pkgs, user, ... }:
+{ pkgs, env, ... }:
 
 {
   system.stateVersion = 5;
-  system.primaryUser = user.username;
+  system.primaryUser = env.username;
 
   networking.hostName = "macos";
   networking.computerName = "macos";
 
-  users.users.${user.username} = {
-    home = "/Users/${user.username}";
+  users.users.${env.username} = {
+    home = "/Users/${env.username}";
     shell = pkgs.nushell;
   };
 

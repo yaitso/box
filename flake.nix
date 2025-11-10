@@ -23,7 +23,7 @@
       fenix,
     }:
     let
-      user = import ./env.nix;
+      env = import ./env.nix;
     in
     {
       darwinConfigurations.macos = nix-darwin.lib.darwinSystem {
@@ -34,21 +34,21 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = false;
-            home-manager.users.${user.username} = ./shared.nix;
+            home-manager.users.${env.username} = ./shared.nix;
             home-manager.extraSpecialArgs = {
-              inherit user;
+              inherit env;
               fenix-pkgs = fenix.packages.aarch64-darwin;
             };
           }
         ];
-        specialArgs = { inherit user; };
+        specialArgs = { inherit env; };
       };
 
       homeConfigurations.linux = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-linux;
         modules = [ ./linux.nix ];
         extraSpecialArgs = {
-          inherit user;
+          inherit env;
           fenix-pkgs = fenix.packages.aarch64-linux;
         };
       };

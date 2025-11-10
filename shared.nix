@@ -1,7 +1,7 @@
 {
   pkgs,
   config,
-  user,
+  env,
   fenix-pkgs,
   ...
 }:
