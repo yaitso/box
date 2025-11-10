@@ -280,5 +280,8 @@
     },
     "cursor.cpp.disabledLanguages": ["plaintext", "markdown"],
     "cursor.composer.queueMessageDefaultBehavior": "queue",
-    "explorer.confirmDragAndDrop": false
+    "explorer.confirmDragAndDrop": false,
+    "typescript.tsserver.watchOptions": {
+        "excludeDirectories": ["**/node_modules/**"]
+    }
 }
