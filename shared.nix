@@ -28,7 +28,7 @@
       helix
       htop
       hyperfine
-      jj
+      jujutsu
       jq
       kubectl
       lazygit
@@ -38,6 +38,7 @@
       nixfmt
       nodejs_22
       opentofu
+      postgresql
       ripgrep
       ruff
       shellcheck
