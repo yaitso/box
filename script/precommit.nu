@@ -1,6 +1,6 @@
 #!/usr/bin/env nu
 
-use shared.nu run
+use shared.nu [run has]
 
 let root = ($env.HOME | path join "box")
 cd $root
@@ -28,5 +28,21 @@ run shellcheck [shellcheck -x setup.sh] $tmpfile --skip-if-missing
 
 print "[precommit] format swift"
 run swiftformat [swiftformat kount] $tmpfile --skip-if-missing
+
+print "[precommit] format json"
+if (has jq) {
+  let json_files = (glob **/*.json | where { |f| $f !~ "node_modules" })
+  for file in $json_files {
+    ^jq -S . $file | save -f $file
+  }
+}
+
+print "[precommit] format toml"
+if (has taplo) {
+  let toml_files = (glob **/*.toml)
+  for file in $toml_files {
+    ^taplo fmt $file
+  }
+}
 
 print "[precommit] done"

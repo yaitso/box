@@ -43,6 +43,7 @@
       ruff
       shellcheck
       shfmt
+      taplo
       tldr
       tokei
       tree
