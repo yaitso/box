@@ -18,8 +18,8 @@ oi() {
   echo "$oi_code"
 }
 
-step() {
-  nu -l -c 'step'
+sd() {
+  nu -l -c 'sd'
 }
 
 gg() {

@@ -53,19 +53,9 @@ load_env_overrides_and_emit_env_nix() {
   # shellcheck disable=SC1090
   [ -f .env."$OS" ] && source .env."$OS"
 
-  BOX_USERNAME="${BOX_USERNAME:-yaitso}"
-  BOX_FULLNAME="${BOX_FULLNAME:-Yai Tso}"
-  BOX_EMAIL="${BOX_EMAIL:-none@yaitso.com}"
-
-  ENV_NIX_CONTENT=$(
-    cat <<EOF
-{
-  username = "$BOX_USERNAME";
-  fullname = "$BOX_FULLNAME";
-  email = "$BOX_EMAIL";
-}
-EOF
-  )
+  ENV_NIX_CONTENT="{
+  username = \"${BOX_USERNAME:-yaitso}\";
+  }"
 
   if [ ! -f env.nix ] || [ "$(cat env.nix)" != "$ENV_NIX_CONTENT" ]; then
     log "generating env.nix"
@@ -136,7 +126,7 @@ install_git_hook_and_unstage_env_nix() {
   git reset HEAD env.nix >/dev/null 2>&1 || true
 }
 
-# ——— main flow (prose-like, minimal branching) ———
+#================================#
 determine_os_and_hostname "${1:-}"
 ensure_xcode_clt_if_macos
 source_nix_daemon_if_present
@@ -145,6 +135,7 @@ load_env_overrides_and_emit_env_nix
 stage_env_nix_if_git_repo
 apply_system_configuration_for_current_os
 configure_default_shell_and_hostname_on_linux
+#==========================================#
 
 elapsed=$(($(date +%s) - start_time))
 log "system configuration applied in ${elapsed}s"

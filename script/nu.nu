@@ -78,7 +78,7 @@ export def gg [...args] {
   git push -f
 }
 
-export def step [...args] {
+export def sd [...args] {
   let msg = if ($args | is-empty) { "yaitso" } else { $args | str join ' ' }
   git add .
   git commit -m $msg

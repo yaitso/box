@@ -244,22 +244,22 @@
         1. current state MUST be working (tests pass, builds succeed)
         2. make ONE small incremental change (single feature, single fix)
         3. test/verify the change works (run relevant commands, check output)
-        4. call `step`
+        4. call `sd`
         5. repeat from step 1
 
         NEVER batch multiple changes before committing. each change is atomic.
         if something breaks, you can git revert to last known good state.
 
-        CRITICAL: use `step` command for commits (defined in tools/bashrc).
-        `step` runs: git add . && git commit -m 'yaitso'
+        CRITICAL: use `sd` command for commits (defined in tools/bashrc).
+        `sd` runs: git add . && git commit -m 'yaitso'
         NEVER use manual git add/commit commands.
         do NOT push during atomic workflow — commits accumulate locally.
 
         examples of atomic changes:
-        - add one package to nix config → test → step
-        - add one hard link mapping → test → step
-        - change one config value → test → step
-        - add one feature flag → test → step
+        - add one package to nix config → test → sd
+        - add one hard link mapping → test → sd
+        - change one config value → test → sd
+        - add one feature flag → test → sd
 
         this ensures every commit in history is a working state.
         no 'wip' commits, no broken intermediate states."/>
@@ -268,7 +268,7 @@
     <git_shortcuts severity="critical">
       bash aliases available (via tools/bashrc):
 
-      `step` - atomic commit (MANDATORY for atom workflow)
+      `sd` - atomic commit (MANDATORY for atom workflow)
         - runs: git add . && git commit -m "yaitso"
         - ALWAYS use this instead of manual git add/commit commands
         - use proactively during atomic workflow
@@ -281,15 +281,6 @@
 
       CRITICAL: commit message MUST be exactly "yaitso" — NOTHING else.
       no variation, no elaboration, no emojis, no "feat:", no "fix:".
-      just: yaitso
-
-      examples FORBIDDEN:
-      - git commit -m "update git config"  ← WRONG
-      - git commit -m "yaitso: add tuist"  ← WRONG
-      - git commit -m "feat: yaitso"       ← WRONG
-
-      CORRECT:
-      - git commit -m "yaitso"             ← ONLY THIS (done via `step`)
     </git_shortcuts>
   </shortcuts>
 
