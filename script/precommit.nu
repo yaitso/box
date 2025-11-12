@@ -30,19 +30,9 @@ print "[precommit] format swift"
 run swiftformat [swiftformat kount] $tmpfile --skip-if-missing
 
 print "[precommit] format json"
-if (has jq) {
-  let json_files = (glob **/*.json | where { |f| $f !~ "node_modules" })
-  for file in $json_files {
-    ^jq -S . $file | save -f $file
-  }
-}
+run prettier [prettier --write "**/*.json" --ignore-path .gitignore] $tmpfile --skip-if-missing
 
 print "[precommit] format toml"
-if (has taplo) {
-  let toml_files = (glob **/*.toml)
-  for file in $toml_files {
-    ^taplo fmt $file
-  }
-}
+run taplo [taplo fmt "**/*.toml"] $tmpfile --skip-if-missing
 
 print "[precommit] done"

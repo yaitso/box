@@ -4,12 +4,7 @@ version = "0.1.0"
 description = "box"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = [
-    "anthropic",
-    "pydantic",
-    "python-dotenv",
-    "result",
-]
+dependencies = ["anthropic", "pydantic", "python-dotenv", "result"]
 
 [tool.basedpyright]
 reportUnusedImport = "none"

@@ -14,8 +14,8 @@ hi Cursor guifg=#000000 guibg=#ffffff ctermfg=0 ctermbg=15
 hi CursorLine guibg=#0d0d0d ctermbg=232
 hi LineNr guifg=#868686 guibg=#000000 ctermfg=102 ctermbg=0
 hi CursorLineNr guifg=#ffffff guibg=#0d0d0d ctermfg=15 ctermbg=232
-hi Visual guibg=#353535 ctermbg=236
-hi MatchParen guibg=#353535 ctermbg=236
+hi Visual guibg=#4a4a4a ctermbg=238
+hi MatchParen guibg=#4a4a4a ctermbg=238
 
 " syntax
 hi Comment guifg=#7f848e ctermfg=102
@@ -36,8 +36,8 @@ hi StatusLine guifg=#ffffff guibg=#0d0d0d cterm=NONE ctermfg=15 ctermbg=232
 hi StatusLineNC guifg=#868686 guibg=#000000 cterm=NONE ctermfg=102 ctermbg=0
 hi VertSplit guifg=#868686 guibg=#000000 cterm=NONE ctermfg=102 ctermbg=0
 hi Pmenu guifg=#ffffff guibg=#0d0d0d ctermfg=15 ctermbg=232
-hi PmenuSel guifg=#ffffff guibg=#353535 ctermfg=15 ctermbg=236
-hi Search guibg=#353535 ctermbg=236
+hi PmenuSel guifg=#ffffff guibg=#4a4a4a ctermfg=15 ctermbg=238
+hi Search guibg=#3a3a3a ctermbg=237
 hi IncSearch guibg=#ff6b6b ctermbg=203
 
 " diagnostics

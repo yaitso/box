@@ -10,20 +10,42 @@ $env.config = {
         }
         {
           condition: {|before, after|
-            let venv_path = ($after | path join ".venv/bin/activate.nu")
-            let expected_venv = ($after | path join ".venv")
-            ($venv_path | path exists) and ($env.VIRTUAL_ENV? != $expected_venv)
+            let venv_path = ($after | path join ".venv")
+            ($venv_path | path exists) and ($env.VIRTUAL_ENV? != $venv_path)
           }
-          code: "overlay use .venv/bin/activate.nu"
+          code: {|before, after|
+            let venv_path = ($after | path join ".venv")
+            $env.VIRTUAL_ENV = $venv_path
+            $env.PATH = ($env.PATH | prepend ($venv_path | path join "bin"))
+          }
         }
       ]
     }
   }
   keybindings: [
     {
-      name: accept_suggestion
+      name: completion_menu
       modifier: none
       keycode: tab
+      mode: [emacs, vi_normal, vi_insert]
+      event: {
+        until: [
+          { send: menu name: completion_menu }
+          { send: menunext }
+        ]
+      }
+    }
+    {
+      name: accept_hint_word
+      modifier: control
+      keycode: right
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: historyhintwordcomplete }
+    }
+    {
+      name: accept_hint_full
+      modifier: alt
+      keycode: right
       mode: [emacs, vi_normal, vi_insert]
       event: { send: historyhintcomplete }
     }
@@ -37,13 +59,13 @@ $env.PROMPT_COMMAND = {
   let yellow = (ansi --escape '38;5;220m')
   let green = (ansi --escape '38;5;79m')
   let purple = (ansi --escape '38;5;177m')
-  let sky_blue = (ansi --escape '38;5;81m')
+  let grey = (ansi --escape '38;5;245m')
   let reset = (ansi reset)
   let host = (hostname | str trim)
 
   let venv_prefix = if ($env.VIRTUAL_ENV? != null) {
-    let venv_name = ($env.VIRTUAL_ENV | path basename)
-    $"($sky_blue)($venv_name)($reset)  "
+    let venv_name = ($env.VIRTUAL_ENV | path dirname | path basename)
+    $"($grey)\(($venv_name)\)($reset) "
   } else {
     ""
   }

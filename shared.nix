@@ -23,6 +23,7 @@
       direnv
       duckdb
       fd
+      flock
       gemini-cli
       gh
       helix
@@ -37,6 +38,7 @@
       nixd
       nixfmt
       nodejs_22
+      nodePackages.prettier
       opentofu
       postgresql
       ripgrep
@@ -54,7 +56,7 @@
     ++ (
       if pkgs.stdenv.isDarwin then
         [
-          pkgs.asitop
+          pkgs.macpm
           pkgs.swiftformat
         ]
       else

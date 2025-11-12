@@ -42,4 +42,3 @@ C-q = ":write-quit-all!"
 focus-lost = true
 after-delay.enable = true
 after-delay.timeout = 300
-

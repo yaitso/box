@@ -1,10 +1,10 @@
 "ui.background" = { bg = "#000000" }
 "ui.text" = "#ffffff"
 "ui.text.focus" = "#ffffff"
-"ui.selection" = { bg = "#353535" }
+"ui.selection" = { bg = "#4a4a4a" }
 "ui.cursorline" = { bg = "#0d0d0d" }
 "ui.cursor" = { fg = "#000000", bg = "#ffffff" }
-"ui.cursor.match" = { bg = "#353535" }
+"ui.cursor.match" = { bg = "#4a4a4a" }
 "ui.linenr" = "#868686"
 "ui.linenr.selected" = "#ffffff"
 "ui.statusline" = { fg = "#ffffff", bg = "#0d0d0d" }
@@ -38,4 +38,3 @@
 "diagnostic.warning" = { underline = { color = "#ffd866", style = "curl" } }
 "diagnostic.info" = { underline = { color = "#7c83fd", style = "curl" } }
 "diagnostic.hint" = { underline = { color = "#868686", style = "curl" } }
-
