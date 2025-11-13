@@ -372,6 +372,8 @@
       - math: 𝛼 𝛽 Δ ∞ ∑ ∫
       - sets: ∈ ∉ ∀ ∃ ⊂ ⊃ ∩ ∪
       - logic: ≠ ≤ ≥ ≈ ∧ ∨ ¬ ⊕
+
+      BUT NOT IN CODE EDITS THAT IS STRICLY FORBIDDEN.
     </unicode_symbols>
 
     <elegant_typography scope="prose NOT code" severity="critical">
