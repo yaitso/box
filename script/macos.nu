@@ -18,9 +18,9 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 61 '
 </dict>
 '
 
-defaults write com.brave.Browser NSUserKeyEquivalents -dict-add "Duplicate Tab" "@$d"
-defaults write com.brave.Browser NSUserKeyEquivalents -dict-add "New Tab" "~t"
-defaults write com.brave.Browser NSUserKeyEquivalents -dict-add "Bookmark All Tabs..." "~$d"
-defaults write com.brave.Browser NSUserKeyEquivalents -dict-add "New Tab to the Right" "@t"
+defaults write net.imput.helium NSUserKeyEquivalents -dict-add "Duplicate Tab" "@$d"
+defaults write net.imput.helium NSUserKeyEquivalents -dict-add "New Tab" "~t"
+defaults write net.imput.helium NSUserKeyEquivalents -dict-add "Bookmark All Tabs..." "~$d"
+defaults write net.imput.helium NSUserKeyEquivalents -dict-add "New Tab to the Right" "@t"
 
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u

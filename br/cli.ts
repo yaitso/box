@@ -73,7 +73,7 @@ const commands: Record<string, Cmd> = {
   },
 
   async focus() {
-    spawnSync('osascript', ['-e', 'tell application "Brave Browser" to activate'], {
+    spawnSync('osascript', ['-e', 'tell application "Helium" to activate'], {
       stdio: 'inherit'
     });
   }

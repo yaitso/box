@@ -232,7 +232,7 @@ const commands: Record<string, Cmd> = {
     const [coords] = args;
     const [x, y] = coords.split(',').map(Number);
 
-    await $`osascript -e 'tell application "Brave Browser" to activate'`;
+    await $`osascript -e 'tell application "Helium" to activate'`;
     await new Promise(resolve => setTimeout(resolve, 500));
 
     const script = `tell application "System Events" to click at {${x}, ${y}}`;

@@ -115,14 +115,14 @@
     ${pkgs.uv}/bin/uv python pin --global 3.14 --quiet || true
   '';
 
-  home.file.".local/bin/brave-9228" = {
+  home.file.".local/bin/helium-9228" = {
     executable = true;
     text = ''
       #!/usr/bin/env bash
       set -euo pipefail
 
-      APP1="$HOME/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
-      APP2="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+      APP1="$HOME/Applications/Helium.app/Contents/MacOS/Helium"
+      APP2="/Applications/Helium.app/Contents/MacOS/Helium"
 
       if [ -x "$APP1.real" ]; then
         BIN="$APP1.real"
@@ -138,14 +138,14 @@
     '';
   };
 
-  home.activation.bravePatch = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.heliumPatch = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     set -e
 
-    WRAPPER="$HOME/.local/bin/brave-9228"
+    WRAPPER="$HOME/.local/bin/helium-9228"
 
     patch_one() {
       local APP="$1"
-      local BIN="$APP/Contents/MacOS/Brave Browser"
+      local BIN="$APP/Contents/MacOS/Helium"
       [ -e "$BIN" ] || return 0
 
       if [ -L "$BIN" ]; then
@@ -164,7 +164,7 @@
       fi
     }
 
-    patch_one "$HOME/Applications/Brave Browser.app"
-    patch_one "/Applications/Brave Browser.app"
+    patch_one "$HOME/Applications/Helium.app"
+    patch_one "/Applications/Helium.app"
   '';
 }
