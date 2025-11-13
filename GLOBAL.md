@@ -300,6 +300,19 @@
         iterations use 2^(prev_exp+1) seconds → sequence: 16s, 32s,
         64s, 128s... pattern: start at exp=5, increment by 1 each iter"/>
     </bashtool_behavior>
+
+    <terraform_tofu severity="critical">
+      NEVER use -auto-approve flag with tofu/terraform apply.
+
+      workflow:
+      1. run tofu plan
+      2. SHOW PLAN OUTPUT to user
+      3. ASK user if plan looks good
+      4. ONLY THEN run tofu apply (without -auto-approve)
+
+      rationale: infrastructure changes are irreversible and expensive.
+      user must explicitly approve before any apply.
+    </terraform_tofu>
   </tool_usage>
 
   <code_philosophy>

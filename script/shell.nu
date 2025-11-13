@@ -49,6 +49,20 @@ $env.config = {
       mode: [emacs, vi_normal, vi_insert]
       event: { send: historyhintcomplete }
     }
+    {
+      name: accept_hint_full_ctrl_e
+      modifier: control
+      keycode: char_e
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: historyhintcomplete }
+    }
+    {
+      name: accept_hint_word_alt_e
+      modifier: alt
+      keycode: char_e
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: historyhintwordcomplete }
+    }
   ]
 }
 

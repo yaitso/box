@@ -93,14 +93,23 @@
     "command": "-composerMode.agent"
   },
   {
+    "key": "alt+e",
+    "command": "-composerMode.agent"
+  },
+  {
     "key": "cmd+e",
     "command": "editor.action.inlineSuggest.acceptNextWord",
-    "when": "inlineSuggestionVisible && !editorReadonly"
+    "when": "inlineSuggestionVisible && !editorReadonly && editorTextFocus"
   },
   {
     "key": "alt+e",
     "command": "editor.action.inlineSuggest.commit",
-    "when": "inlineSuggestionVisible && !editorReadonly"
+    "when": "inlineSuggestionVisible && !editorReadonly && editorTextFocus"
+  },
+  {
+    "key": "shift+ctrl+]",
+    "command": "editor.action.inlineSuggest.acceptNextWord",
+    "when": "inlineSuggestionVisible && !editorReadonly && editorTextFocus"
   },
   {
     "key": "ctrl+cmd+left",
@@ -738,5 +747,50 @@
   {
     "key": "alt+cmd+b",
     "command": "-workbench.action.toggleAuxiliaryBar"
+  },
+  {
+    "key": "cmd+e",
+    "command": "-cursor.toggleAgentWindowIDEUnification",
+    "when": "cursor.agentIdeUnification.featureGate && workbenchState != 'empty'"
+  },
+  {
+    "key": "cmd+right",
+    "command": "-workbench.action.terminal.sendSequence",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "shift+cmd+right",
+    "command": "-workbench.action.terminal.sendSequence",
+    "when": "terminalFocus && terminalShellIntegrationEnabled && !accessibilityModeEnabled && terminalShellType == 'pwsh'"
+  },
+  {
+    "key": "cmd+right",
+    "command": "-quickInput.acceptInBackground",
+    "when": "cursorAtEndOfQuickInputBox && inQuickInput && quickInputType == 'quickPick' || inQuickInput && !inputFocus && quickInputType == 'quickPick'"
+  },
+  {
+    "key": "cmd+right",
+    "command": "-cursorWordAccessibilityRight",
+    "when": "accessibilityModeEnabled && isWindows && textInputFocus && focusedView == 'workbench.panel.output'"
+  },
+  {
+    "key": "alt+cmd+e",
+    "command": "-workbench.action.maximizeChatSize",
+    "when": "cursor.agentIdeUnification.enabled"
+  },
+  {
+    "key": "cmd+; cmd+e",
+    "command": "-testing.debugFailTests"
+  },
+  {
+    "key": "cmd+; e",
+    "command": "-testing.reRunFailTests"
+  },
+
+  // does this work in my
+  {
+    "key": "cmd+r e",
+    "command": "-workbench.files.action.focusOpenEditorsView",
+    "when": "workbench.explorer.openEditorsView.active"
   }
 ]

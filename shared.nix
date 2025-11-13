@@ -21,6 +21,7 @@
       claude-code-router
       codex
       direnv
+      dua
       duckdb
       fd
       flock
