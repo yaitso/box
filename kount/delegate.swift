@@ -49,6 +49,7 @@ class KountDelegate: NSObject, NSApplicationDelegate {
     var current_menu_width: CGFloat {
         show_plots ? Constants.menu_item_width * 1.5 : Constants.menu_item_width
     }
+
     var db_path: String {
         let home = FileManager.default.homeDirectoryForCurrentUser
         return home.appendingPathComponent("box/kount/kount.db").path
@@ -230,7 +231,7 @@ class KountDelegate: NSObject, NSApplicationDelegate {
         let cal = Calendar.current
         let now = Date()
 
-        for day_offset in (0..<days).reversed() {
+        for day_offset in (0 ..< days).reversed() {
             guard let day_date = cal.date(byAdding: .day, value: -day_offset, to: now) else { continue }
             let day_start = cal.startOfDay(for: day_date)
             let day_end = day_start.addingTimeInterval(TimeInterval(Constants.seconds_per_day))
@@ -246,7 +247,7 @@ class KountDelegate: NSObject, NSApplicationDelegate {
             results.append((day_start, count))
         }
 
-        for future_offset in 1...5 {
+        for future_offset in 1 ... 5 {
             if let future_date = cal.date(byAdding: .day, value: future_offset, to: now) {
                 let future_start = cal.startOfDay(for: future_date)
                 results.append((future_start, 0))
@@ -388,7 +389,7 @@ struct PlotsChartView: View {
                 }
             }
             .chartXSelection(value: $selected_date)
-            .chartYScale(domain: 0...max(max_daily_count, 1))
+            .chartYScale(domain: 0 ... max(max_daily_count, 1))
             .chartYAxis(.hidden)
             .frame(height: 180)
             .padding(.leading, 12)
@@ -397,7 +398,8 @@ struct PlotsChartView: View {
             .onChange(of: selected_date) { newValue in
                 if let newValue = newValue,
                    let selected_day = processed_data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: newValue) }),
-                   selected_day.count > 0 {
+                   selected_day.count > 0
+                {
                     hovered_value = selected_day.count
                 } else {
                     hovered_value = nil
