@@ -6,8 +6,6 @@ export alias c = claude
 export alias co = codex
 export alias ns = nix-shell
 export alias py = python3.14
-export alias python = python3.14
-export alias python3 = python3.14
 export alias macpm = mac
 
 export def raw [...args] {
@@ -114,6 +112,7 @@ export def sch [] {
   git checkout schema.py
 }
 
+export alias cd = z
 export alias ls = ls -ald
 export def wh [...rest] { which -a ...$rest | uniq }
 export def ll [] { ls -ald | sort-by modified }
@@ -154,6 +153,10 @@ export def repo [name: string] {
   }
   touch .env
   ".envrc\n.env\n" | save .gitignore
+  git add .
+  git commit -m "yaitso"
+  ^gh repo create $name --private --source . --push
+  ^direnv allow .
   cursor .
 }
 

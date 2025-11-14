@@ -39,17 +39,18 @@
     onActivation.autoUpdate = false;
     onActivation.upgrade = false;
     casks = [
-      "karabiner-elements"
-      "ghostty"
-      "cursor"
-      "zoom"
-      "notion-calendar"
-      "hiddenbar"
+      "bitwarden"
       "brave-browser"
+      "cursor"
+      "ghostty"
       "google-chrome"
       "helium-browser"
-      "tuist"
+      "hiddenbar"
+      "karabiner-elements"
       "lm-studio"
+      "notion-calendar"
+      "tuist"
+      "zoom"
     ];
   };
 

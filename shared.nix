@@ -111,6 +111,7 @@
 
   home.activation.setupPython = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     PATH="${pkgs.uv}/bin:$PATH"
+    ${pkgs.uv}/bin/uv python install 3.12 --quiet || true
     ${pkgs.uv}/bin/uv python install 3.14 graalpy-3.12 --quiet || true
     ${pkgs.uv}/bin/uv python pin --global 3.14 --quiet || true
   '';

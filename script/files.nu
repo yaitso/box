@@ -63,9 +63,17 @@ if ($uv_python_path | path exists) {
 
   if ($python314_bin | path exists) {
     ^ln -sf $python314_bin ($bin_dir | path join "py")
-    ^ln -sf $python314_bin ($bin_dir | path join "python")
-    ^ln -sf $python314_bin ($bin_dir | path join "python3")
     ^ln -sf $python314_bin ($bin_dir | path join "python3.14")
-    print $"[files] linked python to ($bin_dir)/python"
-  }
+    print $"[files] linked python3.14 to ($bin_dir)/python3.14"
+    }
+
+    let python312_bin = ls $uv_python_path
+    | where name =~ "cpython-3.12"
+    | get name.0?
+    | path join "bin/python3.12"
+
+    if ($python312_bin | path exists) {
+      ^ln -sf $python312_bin ($bin_dir | path join "python3.12")
+      print $"[files] linked python3.12 to ($bin_dir)/python3.12"
+    }
 }

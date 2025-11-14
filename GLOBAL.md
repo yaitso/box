@@ -301,6 +301,61 @@
         64s, 128s... pattern: start at exp=5, increment by 1 each iter"/>
     </bashtool_behavior>
 
+    <nushell_invocation severity="critical">
+      MANDATORY: nushell is the default shell across ALL environments
+      (macos, linux vms, remote servers).
+
+      bash wrapper `n "command"` is configured via tools/bashrc + tools/bash_profile.
+
+      DEFAULT BEHAVIOR (99% of cases):
+      ALWAYS use `n "nushell command"` when invoking ANY command via Bash tool.
+
+      examples of CORRECT usage:
+      - n "which tuist"                        → find binary location
+      - n "ls | where size > 1mb"              → filter files
+      - n "open Cargo.toml | get package.name" → parse structured data
+      - n "ps | where name =~ python"          → process inspection
+      - n "sys | get host.name"                → system info
+      - sd                                     → git commit (bashrc wrapper)
+      - gg                                     → commit + force push (bashrc wrapper)
+
+      examples of WRONG usage (DO NOT DO THIS):
+      ✗ ls | grep foo              → use n "ls | where name =~ foo" instead
+      ✗ cat file.json | jq '.key'  → use n "open file.json | get key" instead
+      ✗ find . -name "*.rs"        → use n "ls **/*.rs" instead
+
+      FALLBACK to raw bash ONLY when:
+      1. multiple debug attempts with `n "..."` have failed
+      2. you've verified the nushell command syntax is correct
+      3. you're running pure bash-specific tools (git, curl, etc)
+      4. dealing with bash-specific syntax (heredocs, process substitution)
+
+      workflow when something fails:
+      1. first attempt: n "command"
+      2. debug syntax, try again with n "fixed command"
+      3. check if command exists: n "which command"
+      4. ONLY THEN try raw bash if truly broken
+
+      rationale: ensures consistent behavior across all platforms.
+      tools/bashrc sources automatically, no explicit sourcing needed.
+
+      NEVER invoke raw nushell commands expecting bash to understand them.
+      NEVER use bash for tasks nushell handles better (filtering, parsing, etc).
+
+      MULTILINE SCRIPTS:
+      for complex nushell scripts spanning multiple lines, use heredoc syntax:
+
+      n <<'NU'
+      let files = ls | where size > 1mb
+      $files | each { |f|
+        print $"large file: ($f.name)"
+      }
+      NU
+
+      CRITICAL: ALWAYS use heredoc for multiline nushell scripts.
+      NEVER use semicolons or && to chain nushell commands in single-line strings.
+    </nushell_invocation>
+
     <terraform_tofu severity="critical">
       NEVER use -auto-approve flag with tofu/terraform apply.
 

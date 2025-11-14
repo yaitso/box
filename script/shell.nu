@@ -10,13 +10,41 @@ $env.config = {
         }
         {
           condition: {|before, after|
+            ".python-version" | path exists
+          }
+          code: {|before, after|
+            let version = (open ".python-version" | str trim)
+            let uv_python_path = ($env.HOME | path join ".local/share/uv/python")
+            
+            let python_bin = (
+              ls $uv_python_path 
+              | where name =~ $"cpython-($version)"
+              | get name.0?
+              | default ""
+              | path join "bin"
+            )
+            
+            if ($python_bin != "" and ($python_bin | path exists)) {
+              $env.PATH = ($env.PATH | prepend $python_bin)
+            }
+          }
+        }
+        {
+          condition: {|before, after|
             let venv_path = ($after | path join ".venv")
-            ($venv_path | path exists) and ($env.VIRTUAL_ENV? != $venv_path)
+            ($venv_path | path exists)
           }
           code: {|before, after|
             let venv_path = ($after | path join ".venv")
+            let venv_bin = ($venv_path | path join "bin")
+            
+            if ($env.VIRTUAL_ENV? != null) {
+              let old_venv_bin = ($env.VIRTUAL_ENV | path join "bin")
+              $env.PATH = ($env.PATH | where $it != $old_venv_bin)
+            }
+            
             $env.VIRTUAL_ENV = $venv_path
-            $env.PATH = ($env.PATH | prepend ($venv_path | path join "bin"))
+            $env.PATH = ($env.PATH | prepend $venv_bin)
           }
         }
       ]

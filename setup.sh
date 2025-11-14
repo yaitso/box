@@ -21,7 +21,7 @@ cleanup() {
   esac
 }
 
-trap cleanup EXIT
+trap cleanup EXIT INT TERM
 
 log() { echo "[setup] $*"; }
 die() {
