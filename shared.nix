@@ -25,6 +25,7 @@
       duckdb
       fd
       flock
+      frida-tools
       gemini-cli
       gh
       helix
