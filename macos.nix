@@ -38,6 +38,9 @@
     enable = true;
     onActivation.autoUpdate = false;
     onActivation.upgrade = false;
+    brews = [
+      "flyctl"
+    ];
     casks = [
       "bitwarden"
       "brave-browser"
