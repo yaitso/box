@@ -32,6 +32,7 @@
           ./macos.nix
           home-manager.darwinModules.home-manager
           {
+            nixpkgs.config.allowUnfree = true;
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = false;
             home-manager.users.${env.username} = ./shared.nix;

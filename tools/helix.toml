@@ -38,6 +38,9 @@ C-q = ":write-quit-all!"
 [keys.insert]
 C-q = ":write-quit-all!"
 
+[editor.soft-wrap]
+enable = true
+
 [editor.auto-save]
 focus-lost = true
 after-delay.enable = true

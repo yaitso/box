@@ -124,6 +124,9 @@ export def b [...args] {
   }
 }
 
+export alias se = git add .
+export alias cs = git commit -m "yaitso"
+
 export def gg [...args] {
   let msg = (
     if ($args | is-empty) { "yaitso" }

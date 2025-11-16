@@ -4,21 +4,13 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SCRIPT_DIR
-readonly CACHE_DIR="$HOME/.cache"
-readonly LOCKFILE="$CACHE_DIR/setup.sh.lock"
-readonly LOCKDIR="${LOCKFILE}.d"
-readonly LOCK_FD=200
 
 start_time=$(date +%s)
 TMPFILE=${TMPFILE:-$(mktemp)}
-LOCK_METHOD=""
+VERBOSE_MODE=false
 
 cleanup() {
   rm -f "$TMPFILE"
-  case "$LOCK_METHOD" in
-  mkdir) rmdir "$LOCKDIR" 2>/dev/null || true ;;
-  flock) : ;;
-  esac
 }
 
 trap cleanup EXIT INT TERM
@@ -27,57 +19,6 @@ log() { echo "[setup] $*"; }
 die() {
   log "error: $*"
   exit 1
-}
-
-acquire_lock_flock() {
-  mkdir -p "$(dirname "$LOCKFILE")"
-  eval "exec $LOCK_FD>\"$LOCKFILE\""
-
-  if ! flock -n $LOCK_FD; then
-    local pid
-    pid=$(cat "$LOCKFILE" 2>/dev/null || echo "unknown")
-    die "another setup.sh is already running (pid $pid) please wait"
-  fi
-
-  echo $$ >&$LOCK_FD
-  LOCK_METHOD="flock"
-}
-
-acquire_lock_mkdir() {
-  mkdir -p "$(dirname "$LOCKDIR")"
-
-  local retries=0
-  while ! mkdir "$LOCKDIR" 2>/dev/null; do
-    if [[ -f "$LOCKDIR/pid" ]]; then
-      local pid
-      pid=$(cat "$LOCKDIR/pid" 2>/dev/null || echo "unknown")
-
-      if [[ $pid != "unknown" ]] && ! kill -0 "$pid" 2>/dev/null; then
-        log "removing stale lock from dead process (pid $pid)"
-        rm -rf "$LOCKDIR"
-        continue
-      fi
-
-      die "another setup.sh is already running (pid $pid) please wait"
-    fi
-
-    retries=$((retries + 1))
-    if [[ $retries -gt 3 ]]; then
-      die "failed to acquire lock after $retries attempts"
-    fi
-    sleep 0.1
-  done
-
-  echo $$ >"$LOCKDIR/pid"
-  LOCK_METHOD="mkdir"
-}
-
-acquire_lock() {
-  if has_cmd flock; then
-    acquire_lock_flock
-  else
-    acquire_lock_mkdir
-  fi
 }
 
 is_macos() { [[ "$(uname)" == "Darwin" ]]; }
@@ -155,10 +96,15 @@ run_and_capture_or_die() {
   local label="$1"
   local cmd="$2"
 
-  # shellcheck disable=SC2086
-  if ! eval "$cmd" &>"$TMPFILE"; then
-    cat "$TMPFILE"
-    die "$label"
+  if [[ "$VERBOSE_MODE" == "true" ]]; then
+    # shellcheck disable=SC2086
+    eval "$cmd" || die "$label"
+  else
+    # shellcheck disable=SC2086
+    if ! eval "$cmd" &>"$TMPFILE"; then
+      cat "$TMPFILE"
+      die "$label"
+    fi
   fi
 }
 
@@ -231,11 +177,14 @@ install_git_hook_and_unstage_env_nix() {
 validate_environment() {
   cd "$SCRIPT_DIR" || die "cannot cd to $SCRIPT_DIR"
   [[ -f "setup.sh" ]] || die "setup.sh must be run from box directory"
+
+  for arg in "$@"; do
+    [[ "$arg" == "--verbose" ]] && VERBOSE_MODE=true
+  done
 }
 
 #================================#
-validate_environment
-acquire_lock
+validate_environment "$@"
 determine_os_and_hostname "${1:-}"
 ensure_xcode_clt_if_macos
 source_nix_daemon_if_present
