@@ -33,6 +33,16 @@
           home-manager.darwinModules.home-manager
           {
             nixpkgs.config.allowUnfree = true;
+            nixpkgs.overlays = [
+              (final: prev: {
+                fish = prev.runCommand "fish-stub" { } ''
+                  mkdir -p $out/bin
+                  echo '#!/bin/sh' > $out/bin/fish
+                  echo 'echo "fish stub"' >> $out/bin/fish
+                  chmod +x $out/bin/fish
+                '';
+              })
+            ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = false;
             home-manager.users.${env.username} = ./shared.nix;
