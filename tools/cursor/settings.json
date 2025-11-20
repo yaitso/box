@@ -1,286 +1,290 @@
 {
-  "window.commandCenter": true,
-  "git.autofetch": true,
-  "git.autofetchPeriod": 180,
-  "git.confirmSync": false,
-  "git.enableSmartCommit": true,
-  "git.smartCommitChanges": "tracked",
-  "git.pullTags": false,
-  "git.useCommitInputAsStashMessage": true,
-  "git.ignoreLegacyWarning": true,
-  "git.openRepositoryInParentFolders": "always",
-  "git.ignoreRebaseWarning": true,
-  "git.mergeEditor": true,
-  "githubPullRequests.createOnPublishBranch": "never",
-  "githubPullRequests.pullBranch": "never",
-  "editor.formatOnSave": true,
-  "editor.bracketPairColorization.enabled": true,
-  "editor.guides.bracketPairs": "active",
-  "editor.guides.highlightActiveIndentation": true,
-  "editor.guides.bracketPairsHorizontal": "active",
-  "editor.accessibilitySupport": "off",
-  "editor.unicodeHighlight.ambiguousCharacters": false,
-  "editor.unicodeHighlight.invisibleCharacters": false,
-  "editor.inlineSuggest.enabled": true,
-  "editor.wordWrap": "on",
-  "editor.detectIndentation": true,
-  "editor.maxTokenizationLineLength": 200000,
-  "editor.fontLigatures": true,
-  "editor.stickyScroll.enabled": true,
-  "editor.stickyScroll.defaultModel": "indentationModel",
-  "editor.quickSuggestions": {
-    "other": "on",
-    "comments": "on",
-    "strings": "on"
-  },
-  "editor.semanticHighlighting.enabled": true,
-  "editor.largeFileOptimizations": false,
-  "diffEditor.codeLens": true,
-  "diffEditor.wordWrap": "on",
-  "diffEditor.ignoreTrimWhitespace": false,
-  "diffEditor.renderSideBySide": false,
-  "diffEditor.hideUnchangedRegions.enabled": true,
-  "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 100,
-  "files.watcherExclude": {
-    "**/.bloop": true,
-    "**/.metals": true,
-    "**/.ammonite": true
-  },
-  "files.associations": {
-    "*.nomad": "hcl",
-    ".tmux.conf": "plaintext",
-    ".vimrc": "viml",
-    "*.md": "markdown",
-    "*.sex": "racket",
-    "*.sh": "shellscript",
-    "*.toml": "toml"
-  },
-  "terminal.integrated.defaultProfile.osx": "nu",
-  "terminal.integrated.profiles.osx": {
-    "nu": {
-      "path": "/run/current-system/sw/bin/nu",
-      "icon": "terminal"
+    "window.commandCenter": true,
+    "git.autofetch": true,
+    "git.autofetchPeriod": 180,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "git.smartCommitChanges": "tracked",
+    "git.pullTags": false,
+    "git.useCommitInputAsStashMessage": true,
+    "git.ignoreLegacyWarning": true,
+    "git.openRepositoryInParentFolders": "always",
+    "git.ignoreRebaseWarning": true,
+    "git.mergeEditor": true,
+    "githubPullRequests.createOnPublishBranch": "never",
+    "githubPullRequests.pullBranch": "never",
+    "editor.formatOnSave": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": "active",
+    "editor.guides.highlightActiveIndentation": true,
+    "editor.guides.bracketPairsHorizontal": "active",
+    "editor.accessibilitySupport": "off",
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "editor.inlineSuggest.enabled": true,
+    "editor.wordWrap": "on",
+    "editor.detectIndentation": true,
+    "editor.maxTokenizationLineLength": 200000,
+    "editor.fontLigatures": true,
+    "editor.stickyScroll.enabled": true,
+    "editor.stickyScroll.defaultModel": "indentationModel",
+    "editor.quickSuggestions": {
+        "other": "on",
+        "comments": "on",
+        "strings": "on"
     },
-    "bash": {
-      "path": "/bin/bash",
-      "args": ["-l"],
-      "icon": "terminal-bash"
+    "editor.semanticHighlighting.enabled": true,
+    "editor.largeFileOptimizations": false,
+    "diffEditor.codeLens": true,
+    "diffEditor.wordWrap": "on",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "diffEditor.renderSideBySide": false,
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 100,
+    "files.watcherExclude": {
+        "**/.bloop": true,
+        "**/.metals": true,
+        "**/.ammonite": true
     },
-    "zsh": {
-      "path": "zsh",
-      "args": ["-l"]
+    "files.associations": {
+        "*.nomad": "hcl",
+        ".tmux.conf": "plaintext",
+        ".vimrc": "viml",
+        "*.md": "markdown",
+        "*.sex": "racket",
+        "*.sh": "shellscript",
+        "*.toml": "toml",
+        "*.svx": "markdown"
     },
-    "fish": {
-      "path": "fish",
-      "args": ["-l"]
+    "terminal.integrated.defaultProfile.osx": "nu",
+    "terminal.integrated.profiles.osx": {
+        "nu": {
+            "path": "/run/current-system/sw/bin/nu",
+            "icon": "terminal"
+        },
+        "bash": {
+            "path": "/bin/bash",
+            "args": ["-l"],
+            "icon": "terminal-bash"
+        },
+        "zsh": {
+            "path": "zsh",
+            "args": ["-l"]
+        },
+        "fish": {
+            "path": "fish",
+            "args": ["-l"]
+        },
+        "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+        },
+        "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+        },
+        "bash (2)": {
+            "path": "/usr/local/bin/bash"
+        }
     },
-    "tmux": {
-      "path": "tmux",
-      "icon": "terminal-tmux"
+    "terminal.external.osxExec": "Ghostty.app",
+    "terminal.integrated.shellIntegration.enabled": false,
+    "terminal.integrated.shellIntegration.history": 1000,
+    "terminal.integrated.automationProfile.osx": {
+        "path": "/bin/bash",
+        "icon": "terminal-bash"
     },
-    "pwsh": {
-      "path": "pwsh",
-      "icon": "terminal-powershell"
+    "terminal.integrated.commandsToSkipShell": ["language-julia.interrupt"],
+    "terminal.integrated.enableMultiLinePasteWarning": false,
+    "workbench.colorTheme": "SkillAvid Pure Black",
+    "workbench.editor.labelFormat": "short",
+    "workbench.editor.tabSizing": "fixed",
+    "workbench.editor.tabSizingFixedMaxWidth": 120,
+    "workbench.editor.wrapTabs": true,
+    "workbench.tree.indent": 12,
+    "workbench.editorLargeFileConfirmation": 100,
+    "workbench.editorAssociations": {
+        "*.md": "default",
+        "*.html": "default",
+        "*.markdown": "default",
+        "{git,gitlens,git-graph}:/**/*.{md,csv,svg}": "default"
     },
-    "bash (2)": {
-      "path": "/usr/local/bin/bash"
+    "python.defaultInterpreterPath": "python3",
+    "python.terminal.activateEnvironment": false,
+    "todo-tree.general.tags": [
+        "BUG",
+        "HACK",
+        "FIXME",
+        "TODO",
+        "XXX",
+        "[ ]",
+        "[x]",
+        "NB",
+        "PLUGIN"
+    ],
+    "todo-tree.highlights.enabled": true,
+    "todo-tree.highlights.defaultHighlight": {
+        "type": "text-and-comment",
+        "foreground": "#000000",
+        "background": "#02ffcf"
+    },
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {
+            "icon": "bug",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "FIXME": {
+            "icon": "flame",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "NB": {
+            "icon": "squirrel",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "HACK": {
+            "icon": "smiley",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "BUG": {
+            "icon": "bug",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "XXX": {
+            "icon": "alert",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "PLUGIN": {
+            "icon": "zap",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "[ ]": {
+            "icon": "circle",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        },
+        "[x]": {
+            "icon": "check",
+            "type": "text-and-comment",
+            "foreground": "#000000",
+            "background": "#02ffcf",
+            "iconColour": "#02ffcf"
+        }
+    },
+    "todo-tree.general.revealBehaviour": "end of todo",
+    "projectManager.git.baseFolders": ["~/"],
+    "notebook.output.textLineLimit": 1000,
+    "notebook.output.scrolling": true,
+    "notebook.defaultFormatter": "charliermarsh.ruff",
+    "markdown.styles": [
+        "https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+    ],
+    "search.quickOpen.includeSymbols": true,
+    "testing.defaultGutterClickAction": "debug",
+    "debug.allowBreakpointsEverywhere": true,
+    "debug.toolBarLocation": "docked",
+    "errorLens.enabledDiagnosticLevels": ["warning", "info", "error", "hint"],
+    "errorLens.codeLensEnabled": true,
+    "errorLens.enableOnDiffView": true,
+    "errorLens.editorHoverPartsEnabled": {
+        "messageEnabled": true,
+        "sourceCodeEnabled": true,
+        "buttonsEnabled": true
+    },
+    "errorLens.excludeBySource": [
+        "js(80002)",
+        "svelte(element_invalid_self_closing_tag)",
+        "ty(unresolved-import)",
+        "basedpyright(reportUnusedParameter)",
+        "basedpyright(reportUndefinedVariable)"
+    ],
+    "prettier.tabWidth": 4,
+    "prettier.bracketSameLine": true,
+    "prettier.useTabs": false,
+    "tailwindCSS.codeActions": true,
+    "tailwindCSS.hovers": true,
+    "tailwindCSS.includeLanguages": {
+        "svelte": "html"
+    },
+    "simpleBrowser.focusLockIndicator.enabled": false,
+    "ipynb.pasteImagesAsAttachments.enabled": false,
+    "inlineChat.holdToSpeech": false,
+    "evenBetterToml.formatter.compactArrays": true,
+    "evenBetterToml.formatter.compactInlineTables": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "explorer.fileNesting.patterns": {
+        "*.ts": "${capture}.js",
+        "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+        "*.jsx": "${capture}.js",
+        "*.tsx": "${capture}.ts",
+        "tsconfig.json": "tsconfig.*.json",
+        "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb",
+        "Cargo.toml": "Cargo.lock",
+        "*.sqlite": "${capture}.${extname}-*",
+        "*.db": "${capture}.${extname}-*",
+        "*.sqlite3": "${capture}.${extname}-*",
+        "*.db3": "${capture}.${extname}-*",
+        "*.sdb": "${capture}.${extname}-*",
+        "*.s3db": "${capture}.${extname}-*"
+    },
+    "makefile.configureOnOpen": false,
+    "css.lint.unknownAtRules": "ignore",
+    "svelte.ui.svelteKitFilesContextMenu.enable": "always",
+    "svelte.enable-ts-plugin": true,
+    "extensions.ignoreRecommendations": true,
+    "julia.symbolCacheDownload": true,
+    "julia.enableTelemetry": false,
+    "julia.editor": "cursor",
+    "julia.executablePath": "/opt/homebrew/bin/julia",
+    "julia.execution.codeInREPL": true,
+    "julia.execution.inlineResultsForCellEvaluation": true,
+    "julia.execution.saveOnEval": true,
+    "julia.inlayHints.static.enabled": true,
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "zig.zls.enabled": "on",
+    "magicRacket.languageServer.arguments": ["-l", "racket-langserver"],
+    "magicRacket.trace.server": "verbose",
+    "redhat.telemetry.enabled": false,
+    "explorer.confirmDelete": false,
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "cursor.cpp.disabledLanguages": ["plaintext"],
+    "cursor.composer.queueMessageDefaultBehavior": "stop-and-send",
+    "explorer.confirmDragAndDrop": false,
+    "typescript.tsserver.watchOptions": {
+        "excludeDirectories": ["**/node_modules/**"]
+    },
+    "errorLens.excludeByMessage": [
+        "Additional properties are not allowed ('tags' was unexpected)"
+    ],
+    "[svelte]": {
+        "editor.defaultFormatter": "svelte.svelte-vscode"
     }
-  },
-  "terminal.external.osxExec": "Ghostty.app",
-  "terminal.integrated.shellIntegration.enabled": false,
-  "terminal.integrated.shellIntegration.history": 1000,
-  "terminal.integrated.automationProfile.osx": {
-    "path": "/bin/bash",
-    "icon": "terminal-bash"
-  },
-  "terminal.integrated.commandsToSkipShell": ["language-julia.interrupt"],
-  "terminal.integrated.enableMultiLinePasteWarning": false,
-  "workbench.colorTheme": "SkillAvid Pure Black",
-  "workbench.editor.labelFormat": "short",
-  "workbench.editor.tabSizing": "fixed",
-  "workbench.editor.tabSizingFixedMaxWidth": 120,
-  "workbench.editor.wrapTabs": true,
-  "workbench.tree.indent": 12,
-  "workbench.editorLargeFileConfirmation": 100,
-  "workbench.editorAssociations": {
-    "*.md": "default",
-    "*.html": "default",
-    "*.markdown": "default",
-    "{git,gitlens,git-graph}:/**/*.{md,csv,svg}": "default"
-  },
-  "python.defaultInterpreterPath": "python3",
-  "python.terminal.activateEnvironment": false,
-  "todo-tree.general.tags": [
-    "BUG",
-    "HACK",
-    "FIXME",
-    "TODO",
-    "XXX",
-    "[ ]",
-    "[x]",
-    "NB",
-    "PLUGIN"
-  ],
-  "todo-tree.highlights.enabled": true,
-  "todo-tree.highlights.defaultHighlight": {
-    "type": "text-and-comment",
-    "foreground": "#000000",
-    "background": "#02ffcf"
-  },
-  "todo-tree.highlights.customHighlight": {
-    "TODO": {
-      "icon": "bug",
-      "type": "text-and-comment",
-      "foreground": "#000000",
-      "background": "#02ffcf",
-      "iconColour": "#02ffcf"
-    },
-    "FIXME": {
-      "icon": "flame",
-      "type": "text-and-comment",
-      "foreground": "#000000",
-      "background": "#02ffcf",
-      "iconColour": "#02ffcf"
-    },
-    "NB": {
-      "icon": "squirrel",
-      "type": "text-and-comment",
-      "foreground": "#000000",
-      "background": "#02ffcf",
-      "iconColour": "#02ffcf"
-    },
-    "HACK": {
-      "icon": "smiley",
-      "type": "text-and-comment",
-      "foreground": "#000000",
-      "background": "#02ffcf",
-      "iconColour": "#02ffcf"
-    },
-    "BUG": {
-      "icon": "bug",
-      "type": "text-and-comment",
-      "foreground": "#000000",
-      "background": "#02ffcf",
-      "iconColour": "#02ffcf"
-    },
-    "XXX": {
-      "icon": "alert",
-      "type": "text-and-comment",
-      "foreground": "#000000",
-      "background": "#02ffcf",
-      "iconColour": "#02ffcf"
-    },
-    "PLUGIN": {
-      "icon": "zap",
-      "type": "text-and-comment",
-      "foreground": "#000000",
-      "background": "#02ffcf",
-      "iconColour": "#02ffcf"
-    },
-    "[ ]": {
-      "icon": "circle",
-      "type": "text-and-comment",
-      "foreground": "#000000",
-      "background": "#02ffcf",
-      "iconColour": "#02ffcf"
-    },
-    "[x]": {
-      "icon": "check",
-      "type": "text-and-comment",
-      "foreground": "#000000",
-      "background": "#02ffcf",
-      "iconColour": "#02ffcf"
-    }
-  },
-  "todo-tree.general.revealBehaviour": "end of todo",
-  "projectManager.git.baseFolders": ["~/"],
-  "notebook.output.textLineLimit": 1000,
-  "notebook.output.scrolling": true,
-  "notebook.defaultFormatter": "charliermarsh.ruff",
-  "markdown.styles": [
-    "https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-  ],
-  "search.quickOpen.includeSymbols": true,
-  "testing.defaultGutterClickAction": "debug",
-  "debug.allowBreakpointsEverywhere": true,
-  "debug.toolBarLocation": "docked",
-  "errorLens.enabledDiagnosticLevels": ["warning", "info", "error", "hint"],
-  "errorLens.codeLensEnabled": true,
-  "errorLens.enableOnDiffView": true,
-  "errorLens.editorHoverPartsEnabled": {
-    "messageEnabled": true,
-    "sourceCodeEnabled": true,
-    "buttonsEnabled": true
-  },
-  "errorLens.excludeBySource": [
-    "js(80002)",
-    "svelte(element_invalid_self_closing_tag)",
-    "ty(unresolved-import)",
-    "basedpyright(reportUnusedParameter)",
-    "basedpyright(reportUndefinedVariable)"
-  ],
-  "prettier.tabWidth": 4,
-  "prettier.bracketSameLine": true,
-  "prettier.useTabs": false,
-  "tailwindCSS.codeActions": true,
-  "tailwindCSS.hovers": true,
-  "tailwindCSS.includeLanguages": {
-    "svelte": "html"
-  },
-  "simpleBrowser.focusLockIndicator.enabled": false,
-  "ipynb.pasteImagesAsAttachments.enabled": false,
-  "inlineChat.holdToSpeech": false,
-  "evenBetterToml.formatter.compactArrays": true,
-  "evenBetterToml.formatter.compactInlineTables": true,
-  "security.workspace.trust.untrustedFiles": "open",
-  "explorer.fileNesting.patterns": {
-    "*.ts": "${capture}.js",
-    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
-    "*.jsx": "${capture}.js",
-    "*.tsx": "${capture}.ts",
-    "tsconfig.json": "tsconfig.*.json",
-    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb",
-    "Cargo.toml": "Cargo.lock",
-    "*.sqlite": "${capture}.${extname}-*",
-    "*.db": "${capture}.${extname}-*",
-    "*.sqlite3": "${capture}.${extname}-*",
-    "*.db3": "${capture}.${extname}-*",
-    "*.sdb": "${capture}.${extname}-*",
-    "*.s3db": "${capture}.${extname}-*"
-  },
-  "makefile.configureOnOpen": false,
-  "css.lint.unknownAtRules": "ignore",
-  "svelte.ui.svelteKitFilesContextMenu.enable": "always",
-  "svelte.enable-ts-plugin": true,
-  "extensions.ignoreRecommendations": true,
-  "julia.symbolCacheDownload": true,
-  "julia.enableTelemetry": false,
-  "julia.editor": "cursor",
-  "julia.executablePath": "/opt/homebrew/bin/julia",
-  "julia.execution.codeInREPL": true,
-  "julia.execution.inlineResultsForCellEvaluation": true,
-  "julia.execution.saveOnEval": true,
-  "julia.inlayHints.static.enabled": true,
-  "C_Cpp.intelliSenseEngine": "disabled",
-  "zig.zls.enabled": "on",
-  "magicRacket.languageServer.arguments": ["-l", "racket-langserver"],
-  "magicRacket.trace.server": "verbose",
-  "redhat.telemetry.enabled": false,
-  "explorer.confirmDelete": false,
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "cursor.cpp.disabledLanguages": ["plaintext"],
-  "cursor.composer.queueMessageDefaultBehavior": "stop-and-send",
-  "explorer.confirmDragAndDrop": false,
-  "typescript.tsserver.watchOptions": {
-    "excludeDirectories": ["**/node_modules/**"]
-  },
-  "errorLens.excludeByMessage": [
-    "Additional properties are not allowed ('tags' was unexpected)"
-  ]
 }

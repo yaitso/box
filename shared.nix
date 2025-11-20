@@ -43,6 +43,7 @@
       nodePackages.prettier
       opentofu
       postgresql
+      repomix
       ripgrep
       ruff
       shellcheck

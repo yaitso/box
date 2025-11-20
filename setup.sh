@@ -96,7 +96,7 @@ run_and_capture_or_die() {
   local label="$1"
   local cmd="$2"
 
-  if [[ "$VERBOSE_MODE" == "true" ]]; then
+  if [[ $VERBOSE_MODE == "true" ]]; then
     # shellcheck disable=SC2086
     eval "$cmd" || die "$label"
   else
@@ -179,7 +179,7 @@ validate_environment() {
   [[ -f "setup.sh" ]] || die "setup.sh must be run from box directory"
 
   for arg in "$@"; do
-    [[ "$arg" == "--verbose" ]] && VERBOSE_MODE=true
+    [[ $arg == "--verbose" ]] && VERBOSE_MODE=true
   done
 }
 

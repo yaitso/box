@@ -227,4 +227,8 @@ export def sk [] {
   bun run dev
 }
 
+export def loc [] {
+  ^tokei -C -s code
+}
+
 export use ($nu.default-config-dir | path join "build.nu") *
