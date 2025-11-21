@@ -2,7 +2,6 @@
   pkgs,
   config,
   env,
-  fenix-pkgs,
   ...
 }:
 
@@ -17,16 +16,14 @@
     (with pkgs; [
       ast-grep
       bun
-      claude-code
-      claude-code-router
-      codex
+      cargo
+      clippy
       direnv
       dua
       duckdb
       fd
       flock
       frida-tools
-      gemini-cli
       gh
       helix
       htop
@@ -45,7 +42,10 @@
       postgresql
       repomix
       ripgrep
+      rust-analyzer
       ruff
+      rustc
+      rustfmt
       shellcheck
       shfmt
       taplo
@@ -55,7 +55,6 @@
       uv
       zoxide
     ])
-    ++ [ fenix-pkgs.complete.toolchain ]
     ++ (
       if pkgs.stdenv.isDarwin then
         [

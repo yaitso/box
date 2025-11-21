@@ -40,10 +40,12 @@
     onActivation.upgrade = false;
     brews = [
       "flyctl"
+      "gemini-cli"
     ];
     casks = [
       "bitwarden"
-      "brave-browser"
+      "claude-code"
+      "codex"
       "cursor"
       "ghostty"
       "google-chrome"
@@ -52,9 +54,26 @@
       "karabiner-elements"
       "lm-studio"
       "notion-calendar"
+      "transmission"
       "tuist"
       "zoom"
     ];
+  };
+
+  launchd.agents.flake-update.serviceConfig = {
+    ProgramArguments = [
+      "/bin/bash"
+      "-c"
+      "cd ~/box && nix flake update"
+    ];
+    StartCalendarInterval = [
+      {
+        Hour = 20;
+        Minute = 0;
+      }
+    ];
+    StandardOutPath = "/tmp/flake-update.log";
+    StandardErrorPath = "/tmp/flake-update.err";
   };
 
   system.activationScripts.macosDefaults.text = ''

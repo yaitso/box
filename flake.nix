@@ -9,9 +9,6 @@
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    fenix.url = "github:nix-community/fenix";
-    fenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -20,7 +17,6 @@
       nixpkgs,
       nix-darwin,
       home-manager,
-      fenix,
     }:
     let
       env = import ./env.nix;
@@ -48,7 +44,6 @@
             home-manager.users.${env.username} = ./shared.nix;
             home-manager.extraSpecialArgs = {
               inherit env;
-              fenix-pkgs = fenix.packages.aarch64-darwin;
             };
           }
         ];
@@ -60,7 +55,6 @@
         modules = [ ./linux.nix ];
         extraSpecialArgs = {
           inherit env;
-          fenix-pkgs = fenix.packages.aarch64-linux;
         };
       };
     };

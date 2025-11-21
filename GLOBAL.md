@@ -192,7 +192,9 @@
         switches run:modifier behavior: ALMOST ALWAYS → ALWAYS.
 
         behavior:
-        - countdown from N to 1 without stopping
+        - countdown from N to 1 without stopping per each tool call
+        - and simply systematically do assigned tasks, keep track of them in todo_write tool
+        - do not prefix those with some kinda explanation just spam tool calls silently till you finish the task
         - no permission-seeking, no interrupts for clarification
         - only exception: truly blocked (missing credentials, ambiguous
           spec requiring user choice between mutually exclusive paths)
