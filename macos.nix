@@ -56,6 +56,7 @@
       "notion-calendar"
       "transmission"
       "tuist"
+      "vlc"
       "zoom"
     ];
   };
