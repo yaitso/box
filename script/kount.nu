@@ -21,11 +21,9 @@ if $app_path == "" { error make { msg: "could not find built app" } }
 ^pkill -x Kount | complete
 sleep 1sec
 
-let dest_dir = $env.HOME | path join "Applications"
-let dest = $dest_dir | path join "kount.app"
-^mkdir -p $dest_dir
+let dest = "/Applications/kount.app"
 ^rm -rf $dest | complete
-^cp -R $app_path $dest
+^ln -s $app_path $dest
 
 print $"[kount] launching ($dest)"
 ^open $dest

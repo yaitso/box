@@ -3,6 +3,10 @@ $env.config = {
   hooks: {
     env_change: {
       PWD: [
+        {
+          __zoxide_hook: true
+          code: {|before, after| zoxide add -- $after}
+        }
         {|before, after|
           if (".envrc" | path exists) {
             direnv export json | from json | default {} | load-env

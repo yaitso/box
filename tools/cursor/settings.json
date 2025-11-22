@@ -219,7 +219,10 @@
     "svelte(element_invalid_self_closing_tag)",
     "ty(unresolved-import)",
     "basedpyright(reportUnusedParameter)",
-    "basedpyright(reportUndefinedVariable)"
+    "basedpyright(reportUndefinedVariable)",
+    "svelte(a11y_click_events_have_key_events)",
+    "svelte(a11y_no_static_element_interactions)",
+    "svelte(a11y_no_noninteractive_element_interactions)"
   ],
   "prettier.tabWidth": 4,
   "prettier.bracketSameLine": true,
@@ -282,7 +285,8 @@
     "excludeDirectories": ["**/node_modules/**"]
   },
   "errorLens.excludeByMessage": [
-    "Additional properties are not allowed ('tags' was unexpected)"
+    "Additional properties are not allowed ('tags' was unexpected)",
+    "'main' attribute cannot be used in a module that contains top-level code"
   ],
   "[svelte]": {
     "editor.defaultFormatter": "svelte.svelte-vscode"
