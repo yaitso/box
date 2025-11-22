@@ -137,6 +137,10 @@ export def gg [...args] {
   git push -f
 }
 
+export def gf [] {
+  git push -f
+}
+
 export def sd [...args] {
   let msg = (
     if ($args | is-empty) { "yaitso" }
