@@ -36,8 +36,8 @@
 
   homebrew = {
     enable = true;
-    onActivation.autoUpdate = false;
-    onActivation.upgrade = false;
+    onActivation.autoUpdate = true;
+    onActivation.upgrade = true;
     brews = [
       "flyctl"
       "gemini-cli"
@@ -56,25 +56,9 @@
       "notion-calendar"
       "transmission"
       "tuist"
-      "vlc"
+      # "vlc"
       "zoom"
     ];
-  };
-
-  launchd.agents.flake-update.serviceConfig = {
-    ProgramArguments = [
-      "/bin/bash"
-      "-c"
-      "cd ~/box && nix flake update"
-    ];
-    StartCalendarInterval = [
-      {
-        Hour = 20;
-        Minute = 0;
-      }
-    ];
-    StandardOutPath = "/tmp/flake-update.log";
-    StandardErrorPath = "/tmp/flake-update.err";
   };
 
   system.activationScripts.macosDefaults.text = ''
