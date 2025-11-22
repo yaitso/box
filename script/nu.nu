@@ -155,7 +155,7 @@ export def repo [name: string] {
     cp ~/box/.envrc.example .envrc
   }
   touch .env
-  ".envrc\n.env\n" | save .gitignore
+  ".env\n.envrc\n" | save .gitignore
   git add .
   git commit -m "yaitso"
   ^gh repo create $name --private --source . --push
